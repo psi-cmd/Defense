@@ -12,14 +12,14 @@ class Bullet {
 public:
     int VEL = 8;
 
-    Bullet(Enemy **tar, int x, int y);
+    Bullet(Enemy *tar, int x, int y);
 
     void render();
 
     void move();
 
 private:
-    Enemy **target;  //二级指针防止飞弹
+    Enemy *target;  //二级指针防止飞弹
     SDL_Texture *texture;
     float VelX;
     float VelY;

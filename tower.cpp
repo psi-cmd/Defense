@@ -13,7 +13,7 @@ void Tower::attack() {  //attack 由render掌管
     SDL_RenderCopy(gRenderer, Texture_Now, nullptr, rect);
     SDL_RenderCopy(gRenderer, MtowerManTexture[(int) (PicOrder / DILUTE)], nullptr, &Man_rect);
     if ((float) PicOrder / DILUTE == 5) {
-        game->Bullet_Array[game->Bullet_point++] = new Bullet(&target, rect->x + 38, rect->y + 0);
+        game->Bullet_Array[game->Bullet_point++] = new Bullet(target, rect->x + 38, rect->y + 0);
     }
     PicOrder / DILUTE < 9 ? PicOrder++ : PicOrder = 0, target = nullptr;
 }
