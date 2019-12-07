@@ -41,7 +41,7 @@ public:
     unsigned char Bullet_point = 0; //指向下一个子弹空位
 private:
     Uint32 Refresh_Tick = 0;
-    int Enemy_Count = 10;
+    int Enemy_Count = 100;
     int Interval = 2000;
 };
 

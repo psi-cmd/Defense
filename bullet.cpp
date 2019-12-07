@@ -4,6 +4,8 @@
 
 #include "bullet.h"
 
+float visual;
+
 
 Bullet::Bullet(Enemy *tar, int x, int y) {
     target = tar;
@@ -14,24 +16,33 @@ Bullet::Bullet(Enemy *tar, int x, int y) {
 
 void Bullet::render() {
     move();
-    SDL_RenderCopy(gRenderer, texture, nullptr, &Pos);
+    if (exist)
+        SDL_RenderCopy(gRenderer, texture, nullptr, &Pos);
+    else {
+        delete this;
+        game->Bullet_Array[game->Bullet_Num] = nullptr;
+    }
 }
 
 void Bullet::move() {
-   /* if (target == nullptr){
-        delete this;
-        game->Bullet_Array[game->Bullet_Num] = nullptr;
-        return;
-    }*/
+    /* if (target == nullptr){
+         delete this;
+         game->Bullet_Array[game->Bullet_Num] = nullptr;
+         return;
+     }*/
     if (abs(Pos.x - (target)->Pos.x) < VEL && abs(Pos.y - (target)->Pos.y) < VEL) {
         (target)->Health -= 10;
-        delete this;
-        game->Bullet_Array[game->Bullet_Num] = nullptr;
+        exist = false;
         return;
     }
-    float xtoy = (Pos.x - (target)->Pos.x) / (Pos.y - (target)->Pos.y);
+    float xtoy;
+    if (Pos.y - (target)->Pos.y < 1000 && Pos.x - (target)->Pos.x < 1000 && -1000 < Pos.y - (target)->Pos.y &&
+        -1000 < Pos.x - (target)->Pos.x)
+        xtoy = (Pos.x - (target)->Pos.x) / (Pos.y - (target)->Pos.y);
+    else exist = false;
     VelY = sqrt(VEL * VEL / (1 + xtoy * xtoy));
     ((target)->Pos.y - Pos.y) < 0 ? VelY = -VelY : 0;
+    visual = VelY;
     VelX = VelY * xtoy;
     Pos.x += VelX;
     Pos.y += VelY;

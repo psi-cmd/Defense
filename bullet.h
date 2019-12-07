@@ -18,6 +18,8 @@ public:
 
     void move();
 
+    bool exist = true;
+
 private:
     Enemy *target;  //二级指针防止飞弹
     SDL_Texture *texture;
