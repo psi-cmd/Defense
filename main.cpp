@@ -113,6 +113,7 @@ bool loadMedia() {
 }
 
 int WinMain(int argc, char **argv) {
+    int pause, x, y;
     if (!init()) {
         cout << "failed to initialize!" << endl;
     } else {
@@ -122,7 +123,23 @@ int WinMain(int argc, char **argv) {
     }
     game->Tower_init();
     start = time = SDL_GetTicks();
+    SDL_RenderClear(gRenderer);
+    SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染器开始背景
+    SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染器开始按钮
     int flag = 1;
+    while (!Quit)   //游戏进入界面循环
+    {
+        if (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
+                Quit = true;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
+                SDL_GetMouseState(&x, &y);
+                if ((x > 374) && (x < 626) && (y > 390) && (y < 513)) break;
+            }
+        }
+        SDL_RenderPresent(gRenderer);
+    }
     while (!Quit) {  //游戏主循环
         while (SDL_PollEvent(&e) != 0) {  //事件池，没事就返回0
             if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
@@ -131,6 +148,32 @@ int WinMain(int argc, char **argv) {
             if (e.key.keysym.sym == SDLK_UP && flag) {
                 game->Tower_Build(1, Magic);
                 flag = 0;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (e.button.button == SDL_BUTTON_LEFT) {
+                    SDL_GetMouseState(&x, &y);
+                    if ((x > 900) && (x < 950) && (y > 30) && (y < 76)) {
+                        pause = 1;
+                        SDL_RenderCopy(gRenderer, re, nullptr, &repos);
+                        SDL_RenderPresent(gRenderer);
+                    }
+                }
+            }
+            if (pause) {
+                while (!Quit) {
+                    if (SDL_PollEvent(&e) != 0) {
+                        if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
+                        if (e.type == SDL_MOUSEBUTTONDOWN) {
+                            if (e.button.button == SDL_BUTTON_LEFT) {
+                                SDL_GetMouseState(&x, &y);
+                                if ((x > 353) && (x < 647) && (y > 374) && (y < 483)) {
+                                    pause = 0;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         if (SDL_GetTicks() - time >= 10) {
