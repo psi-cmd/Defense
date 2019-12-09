@@ -13,6 +13,11 @@
 #define Total 1  //敌军类总数
 #define Enemy1_pic 6
 
+enum State {
+    IN,
+    OUT
+};
+
 enum Enemy_Type {
     Enemy1
 };
@@ -42,18 +47,28 @@ public:
 
     Enemy();  //建构函数
 //    ~Enemy();
-    void move();  //敌军移动
+    void move(struct circle Circle);  //敌军移动
+    void move_control();
     void render();  //显示刷新
     void death();  //去世操作
     bool escaping(int x, int y);
+    bool overline(State state);
     int Health;
     SDL_Rect Pos;  //位置
-    float Distance_Covered = 0;
+    double Distance_Covered = 0;
 
 private:
-    int VelX, VelY=0;  //速度
+
+    int circle_num = 0;
+    bool in_circle = false;  //是否进入圆范围内
+    bool exiting_circle = false;
+    bool flat_overed = false;
+    double judgement = 0;
+
     int PicOrder = 0;
 protected:
+    double VelX, VelY=0;  //速度
+    double X, Y;
     int Picture_max;
     SDL_Texture **Texture_Set;
 };

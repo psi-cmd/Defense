@@ -3,6 +3,7 @@
 extern void Print_Dec(int n, SDL_Rect *pos);
 extern void wave(int m ,int n);
 extern void pWinorLose(SDL_Texture *pic);
+bool In_Rect(int x, int y, SDL_Rect *rect);
 void loadSingle() {
     map = loadTexture(mapfile);
     if (map == nullptr) {
@@ -35,10 +36,10 @@ void loadSingle() {
 void refresh() {
     SDL_RenderClear(gRenderer);
     SDL_RenderCopy(gRenderer, map, nullptr, nullptr);  //渲染器加载地图
-    SDL_RenderCopy(gRenderer, pause, nullptr, &pausepos);
-    SDL_RenderCopy(gRenderer, statef, nullptr, &statepos);
-    pWinorLose(defeat);
-    Print_Dec(50, lifepos);
+    SDL_RenderCopy(gRenderer, pause, nullptr, &pausepos);  //暂停按钮
+    SDL_RenderCopy(gRenderer, statef, nullptr, &statepos);  //血量栏
+//    pWinorLose(defeat);   //输赢
+    Print_Dec(50, lifepos);  //
     Print_Dec(256, moneypos);
     wave(2,7);
     game->Enemy_Wave();
@@ -48,6 +49,9 @@ void refresh() {
     SDL_Delay(50);
 }
 
+bool In_Rect(int x, int y, SDL_Rect *rect){
+    return x > rect->x && y > rect->y && x - rect->x < rect->w && y - rect->y < rect->h;
+}
 
 void Print_Dec(int n, SDL_Rect *pos)
 {

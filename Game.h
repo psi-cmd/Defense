@@ -19,7 +19,7 @@ public:
 
     void Enemy_Wave();
 
-    void Tower_Build(int n, TowerType);
+    void Tower_Build(TowerType type, int x, int y);
 
     void Exit_Game(int n);
 

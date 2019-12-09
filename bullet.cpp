@@ -37,7 +37,7 @@ void Bullet::move() {
     }
     float xtoy;
     if (Pos.y - (target)->Pos.y < 1000 && Pos.x - (target)->Pos.x < 1000 && -1000 < Pos.y - (target)->Pos.y &&
-        -1000 < Pos.x - (target)->Pos.x)
+        -1000 < Pos.x - (target)->Pos.x && (Pos.y - (target)->Pos.y) != 0)
         xtoy = (Pos.x - (target)->Pos.x) / (Pos.y - (target)->Pos.y);
     else exist = false;
     VelY = sqrt(VEL * VEL / (1 + xtoy * xtoy));

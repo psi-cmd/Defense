@@ -35,7 +35,7 @@ std::string victoryfile = R"(..\image\victory.png)";
 std::string againfile = R"(..\image\again.png)";
 std::string quitfile = R"(..\image\quit.png)";
 
-SDL_Rect WayPoint[20] = {960, 290, 35, 30};
+SDL_Rect WayPoint[20] = {850, 290, 35, 30};
 SDL_Rect startpos = {374,390,252,123};
 SDL_Rect pausepos = {900,30,50,46};
 SDL_Rect repos = {353,374,295,109};

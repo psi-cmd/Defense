@@ -68,12 +68,12 @@ public:
 
     int attackX;
     int attackY;  //射击中心
+    SDL_Rect *rect;  //对应坐标
 private:
     int state = 0;
     float HtoW = 5.0 / 9;
     SDL_Texture *Texture_Now = TowerStaticTexture[0];
     SDL_Texture *Man_in_Tower = nullptr;
-    SDL_Rect *rect;  //对应坐标
     SDL_Rect Man_rect;  //人右上角
     int range = 0;
     int CDstart = 0;

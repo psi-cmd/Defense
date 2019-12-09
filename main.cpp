@@ -145,10 +145,10 @@ int WinMain(int argc, char **argv) {
             if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
                 Quit = true;
             }
-            if (e.key.keysym.sym == SDLK_UP && flag) {
-                game->Tower_Build(1, Magic);
+            /*if (e.key.keysym.sym == SDLK_UP && flag) {
+                game->Tower_Build(Magic, x, y);
                 flag = 0;
-            }
+            }*/
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 if (e.button.button == SDL_BUTTON_LEFT) {
                     SDL_GetMouseState(&x, &y);
@@ -157,6 +157,7 @@ int WinMain(int argc, char **argv) {
                         SDL_RenderCopy(gRenderer, re, nullptr, &repos);
                         SDL_RenderPresent(gRenderer);
                     }
+                    game->Tower_Build(Magic, x, y);
                 }
             }
             if (pause) {

@@ -75,8 +75,13 @@ void Game::Render() {
 
 }
 
-void Game::Tower_Build(int n, TowerType type) {
-    Tower_Array[n]->buildTower(type);
+void Game::Tower_Build(TowerType type, int x, int y) {
+    for (int i=0; i<Tower_point; ++i){
+        if (In_Rect(x, y, Tower_Array[i]->rect)){
+            Tower_Array[i]->buildTower(type);
+            return;
+        }
+    }
 }
 
 
@@ -101,6 +106,7 @@ void Game::Detect() {
     }
 
 }
+
 
 /*void Game::Detect() {
     for (int i = 0; i < Tower_point; ++i) {
