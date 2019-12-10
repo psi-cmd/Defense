@@ -113,7 +113,9 @@ bool loadMedia() {
 }
 
 int WinMain(int argc, char **argv) {
-    int pause, x, y;
+    int x, y;
+    srand(time(nullptr));
+    bool pause=false;
     if (!init()) {
         cout << "failed to initialize!" << endl;
     } else {
@@ -122,7 +124,7 @@ int WinMain(int argc, char **argv) {
         }  //所有显示都给渲染器了。
     }
     game->Tower_init();
-    start = time = SDL_GetTicks();
+    start = _time = SDL_GetTicks();
     SDL_RenderClear(gRenderer);
     SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染器开始背景
     SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染器开始按钮
@@ -145,15 +147,14 @@ int WinMain(int argc, char **argv) {
             if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
                 Quit = true;
             }
-            /*if (e.key.keysym.sym == SDLK_UP && flag) {
-                game->Tower_Build(Magic, x, y);
-                flag = 0;
-            }*/
+            if (e.key.keysym.sym == SDLK_p) {
+                pause = true;
+            }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 if (e.button.button == SDL_BUTTON_LEFT) {
                     SDL_GetMouseState(&x, &y);
                     if ((x > 900) && (x < 950) && (y > 30) && (y < 76)) {
-                        pause = 1;
+                        pause = true;
                         SDL_RenderCopy(gRenderer, re, nullptr, &repos);
                         SDL_RenderPresent(gRenderer);
                     }
@@ -168,7 +169,7 @@ int WinMain(int argc, char **argv) {
                             if (e.button.button == SDL_BUTTON_LEFT) {
                                 SDL_GetMouseState(&x, &y);
                                 if ((x > 353) && (x < 647) && (y > 374) && (y < 483)) {
-                                    pause = 0;
+                                    pause = false;
                                     break;
                                 }
                             }
@@ -177,9 +178,9 @@ int WinMain(int argc, char **argv) {
                 }
             }
         }
-        if (SDL_GetTicks() - time >= 10) {
+        if (SDL_GetTicks() - _time >= 10) {
             refresh();
-            time = SDL_GetTicks();
+            _time = SDL_GetTicks();
         }
     }
     close();

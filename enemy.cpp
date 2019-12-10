@@ -5,7 +5,7 @@
 #include <cmath>
 
 
-bool watch;
+//bool watch;
 
 bool Enemy::overline(State state) {
     circle c = Circles[circle_num];
@@ -37,9 +37,10 @@ bool Enemy::overline(State state) {
     return false;
 }
 
-Enemy::Enemy() {
+Enemy::Enemy(int n) {
     //Initialize the offsets
     Pos = WayPoint[0];
+    Pos.y += n;
     //Initialize the velocity
     PicOrder = 0;
 }
@@ -75,6 +76,8 @@ void Enemy::move(struct circle Circle) {
 
 void Enemy::render() {
     if (Health <= 0) {
+        PicOrder < (Picture_max - 2) * 2 ? PicOrder = (Picture_max - 2) * 2 : 0;  //设定死亡动画只有两帧。
+        dying = true;
         death();
         return;
     }
@@ -102,12 +105,20 @@ bool Enemy::escaping(int x, int y) {
 //    free(Pos);
 }*/
 
-Enemy1::Enemy1() {
+Enemy1::Enemy1(int n) : Enemy(n) {
     Texture_Set = DevilTexture;
     Picture_max = Enemy1_pic;
-    Health = 300;
-    VEL = 1;
+    Health = 30;
+    VEL = 10;
     VelX = -VEL;
     X = Pos.x;
     Y = Pos.y;
+}
+
+void Enemy1::death() {
+    if (PicOrder < Picture_max * 2) {
+        SDL_RenderCopy(gRenderer, Texture_Set[PicOrder++ / 2], nullptr, &Pos);
+        return;
+    }
+    Enemy::death();
 }

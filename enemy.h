@@ -41,21 +41,24 @@ SDL_Texture *DevilTexture[Enemy1_pic];
 
 class Enemy {
 public:
+    Enemy(int n);
+
 //    const SDL_Rect FigSize = {0, 0, 35, 30};  //敌军图片大小
     //Maximum axis velocity of the dot
     float VEL = 1;
 
-    Enemy();  //建构函数
 //    ~Enemy();
     void move(struct circle Circle);  //敌军移动
     void move_control();
     void render();  //显示刷新
-    void death();  //去世操作
+    virtual void death();  //去世操作
     bool escaping(int x, int y);
     bool overline(State state);
     int Health;
     SDL_Rect Pos;  //位置
     double Distance_Covered = 0;
+    bool dying = false;
+
 
 private:
 
@@ -65,8 +68,8 @@ private:
     bool flat_overed = false;
     double judgement = 0;
 
-    int PicOrder = 0;
 protected:
+    int PicOrder = 0;
     double VelX, VelY=0;  //速度
     double X, Y;
     int Picture_max;
@@ -75,7 +78,8 @@ protected:
 
 class Enemy1 : public Enemy {
 public:
-    Enemy1();
+    Enemy1(int n);
+    void death();
 private:
     std::string *Texture{};
 };

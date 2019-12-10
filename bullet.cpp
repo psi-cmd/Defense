@@ -48,4 +48,10 @@ void Bullet::move() {
     Pos.y += VelY;
 }
 
+/*void Bullet::nearest() {
+    for (int i=0; i<255; ++i){
+        game->Enemy_Array[i]->Pos.x
+    }
+}*/
+
 

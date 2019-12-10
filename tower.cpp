@@ -20,8 +20,6 @@ void Tower::attack() {  //attack 由render掌管
 
 void Tower::buildTower(TowerType tower_type) {
     switch (tower_type) {
-        case None:
-            break;
         case Arrow:
             break;
         case Barracks:
@@ -62,6 +60,7 @@ bool Tower::in_range(SDL_Rect target) {
 }
 
 void Tower::Mtower_Init() {
+    game->money -= 500;
     type = Magic;
     Texture_Now = TowerStaticTexture[1];
     Man_rect = *rect;

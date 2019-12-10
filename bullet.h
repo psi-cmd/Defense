@@ -18,6 +18,8 @@ public:
 
     void move();
 
+    void nearest();
+
     bool exist = true;
 
 private:

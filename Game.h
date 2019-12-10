@@ -39,6 +39,8 @@ public:
     Bullet *Bullet_Array[256];
 
     unsigned char Bullet_point = 0; //指向下一个子弹空位
+    int money = 2000;
+    int life = 10;
 private:
     Uint32 Refresh_Tick = 0;
     int Enemy_Count = 100;

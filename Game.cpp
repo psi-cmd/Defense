@@ -31,7 +31,7 @@ void Game::Enemy_Add(Enemy_Type n) {
             }
             switch (n) {
                 case Enemy1:
-                    Enemy_Array[Enemy_Num - 1] = new class Enemy1;
+                    Enemy_Array[Enemy_Num - 1] = new class Enemy1((int) rand()%16);
                     break;
             }
             return;
@@ -51,6 +51,8 @@ void Game::Exit_Game(int n) {
 }
 
 void Game::Render() {
+    Print_Dec(life, lifepos);
+    Print_Dec(money, moneypos);
     Enemy_Num = 0;
     do {
         if (Enemy_Array[Enemy_Num] != nullptr) {
@@ -92,13 +94,15 @@ void Game::Detect() {
             int Distance = -100000, temp;
             for (int j = 0; j < 256; ++j) {
                 if (Enemy_Array[j] != nullptr &&
+                    !Enemy_Array[j]->dying &&
                     Tower_Array[i]->in_range(Enemy_Array[j]->Pos)) {
-                    temp = (Enemy_Array[j]->Pos.x - Tower_Array[i]->attackX) *
+                    Enemy_Array[j]->Distance_Covered > Distance ? Is_target = Enemy_Array[j], Distance = Enemy_Array[j]->Distance_Covered : 0;
+                    /*temp = (Enemy_Array[j]->Pos.x - Tower_Array[i]->attackX) *
                            (Enemy_Array[j]->Pos.x - Tower_Array[i]->attackX) +
                            (Enemy_Array[j]->Pos.y - Tower_Array[i]->attackY) *
                            (Enemy_Array[j]->Pos.y - Tower_Array[i]->attackY);
                     Enemy_Array[j]->escaping(Tower_Array[i]->attackX, Tower_Array[i]->attackY) ? 0 : temp = -temp;
-                    temp > Distance ? Distance = temp, Is_target = Enemy_Array[j] : nullptr;
+                    temp > Distance ? Distance = temp, Is_target = Enemy_Array[j] : nullptr;*/
                     Tower_Array[i]->target = Is_target;
                 }
             }
@@ -108,19 +112,5 @@ void Game::Detect() {
 }
 
 
-/*void Game::Detect() {
-    for (int i = 0; i < Tower_point; ++i) {
-        if (Tower_Array[i]->type != None) {
-            for (int j = 0; j < 256; ++j) {
-                if (Enemy_Array[j] != nullptr && Tower_Array[i]->in_range(Enemy_Array[j]->Pos) &&
-                    Tower_Array[i]->target == nullptr) {
-                    Tower_Array[i]->target = Enemy_Array[j];
-                    return;
-                }
-            }
-        }
-    }
-
-}*/
 
 
