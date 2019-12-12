@@ -4,6 +4,7 @@
 
 #include "main.h"
 #include "Game.h"
+#include "enemy.h"
 #include <cmath>
 
 Game::Game() {
@@ -90,20 +91,14 @@ void Game::Tower_Build(TowerType type, int x, int y) {
 void Game::Detect() {
     for (int i = 0; i < Tower_point; ++i) {
         if (Tower_Array[i]->type != None) {
-            Enemy *Is_target = nullptr;
+            int Is_target = 0;
             int Distance = -100000, temp;
             for (int j = 0; j < 256; ++j) {
                 if (Enemy_Array[j] != nullptr &&
                     !Enemy_Array[j]->dying &&
                     Tower_Array[i]->in_range(Enemy_Array[j]->Pos)) {
-                    Enemy_Array[j]->Distance_Covered > Distance ? Is_target = Enemy_Array[j], Distance = Enemy_Array[j]->Distance_Covered : 0;
-                    /*temp = (Enemy_Array[j]->Pos.x - Tower_Array[i]->attackX) *
-                           (Enemy_Array[j]->Pos.x - Tower_Array[i]->attackX) +
-                           (Enemy_Array[j]->Pos.y - Tower_Array[i]->attackY) *
-                           (Enemy_Array[j]->Pos.y - Tower_Array[i]->attackY);
-                    Enemy_Array[j]->escaping(Tower_Array[i]->attackX, Tower_Array[i]->attackY) ? 0 : temp = -temp;
-                    temp > Distance ? Distance = temp, Is_target = Enemy_Array[j] : nullptr;*/
-                    Tower_Array[i]->target = Is_target;
+                    Enemy_Array[j]->Distance_Covered > Distance ? Is_target = j, Distance = Enemy_Array[j]->Distance_Covered : 0;
+                    Tower_Array[i]->target = &Enemy_Array[Is_target];
                 }
             }
         }

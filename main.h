@@ -10,6 +10,8 @@
 #include <random>
 
 
+SDL_Point Mouse_Point;
+
 //声明：有关游戏逻辑的函数，函数命名一律以“名词——动词（）”方式进行。
 SDL_Window *gWindow = nullptr;  //窗体
 SDL_Texture *map = nullptr;
@@ -17,7 +19,7 @@ std::string mapfile = R"(..\image\map_demo.png)";
 std::string towergroundfile = R"(..\image\raw.png)";
 SDL_Texture *startbg = nullptr;
 SDL_Texture *starticon = nullptr;
-SDL_Texture *pause = nullptr;
+SDL_Texture *pause_pic = nullptr;
 SDL_Texture *re = nullptr;
 SDL_Texture *statef = nullptr;
 SDL_Texture *numf[10] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
@@ -64,6 +66,8 @@ const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 857;
 
 bool Quit = false;
+bool pause=false;
+
 SDL_Event e;
 auto *game = new Game;
 

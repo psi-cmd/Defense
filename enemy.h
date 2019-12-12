@@ -52,12 +52,12 @@ public:
     void move_control();
     void render();  //显示刷新
     virtual void death();  //去世操作
-    bool escaping(int x, int y);
     bool overline(State state);
     int Health;
     SDL_Rect Pos;  //位置
     double Distance_Covered = 0;
     bool dying = false;
+    SDL_Point Center;
 
 
 private:

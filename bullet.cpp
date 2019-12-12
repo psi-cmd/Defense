@@ -4,14 +4,20 @@
 
 #include "bullet.h"
 
+#include <cmath>
+
 float visual;
 
 
-Bullet::Bullet(Enemy *tar, int x, int y) {
-    target = tar;
+Bullet::Bullet(Enemy **tar, int x, int y) {
+    ptarget = tar;
+    target = *tar;
     Pos.x = x;
     Pos.y = y;
     texture = MBullet_Texture;
+    SDL_QueryTexture(texture, nullptr, nullptr, &(Center.x), &(Center.y));
+    Center.x /= 2;
+    Center.y /= 2;
 }
 
 void Bullet::render() {
@@ -19,39 +25,48 @@ void Bullet::render() {
     if (exist)
         SDL_RenderCopy(gRenderer, texture, nullptr, &Pos);
     else {
+        SDL_RenderCopy(gRenderer, texture, nullptr, &target->Pos);
         delete this;
         game->Bullet_Array[game->Bullet_Num] = nullptr;
     }
 }
 
 void Bullet::move() {
-    /* if (target == nullptr){
-         delete this;
-         game->Bullet_Array[game->Bullet_Num] = nullptr;
+     if (*ptarget == nullptr || (**ptarget).dying){
+         nearest();
          return;
-     }*/
-    if (abs(Pos.x - (target)->Pos.x) < VEL && abs(Pos.y - (target)->Pos.y) < VEL) {
+     }
+    float rX = Pos.x + Center.x - (target)->Pos.x - (target)->Center.x;
+    float rY = Pos.y + Center.y - (target)->Pos.y - (target)->Center.y;
+    if (abs(rX) < VEL && abs(rY) < VEL) {
         (target)->Health -= 10;
         exist = false;
         return;
     }
     float xtoy;
-    if (Pos.y - (target)->Pos.y < 1000 && Pos.x - (target)->Pos.x < 1000 && -1000 < Pos.y - (target)->Pos.y &&
-        -1000 < Pos.x - (target)->Pos.x && (Pos.y - (target)->Pos.y) != 0)
-        xtoy = (Pos.x - (target)->Pos.x) / (Pos.y - (target)->Pos.y);
-    else exist = false;
-    VelY = sqrt(VEL * VEL / (1 + xtoy * xtoy));
-    ((target)->Pos.y - Pos.y) < 0 ? VelY = -VelY : 0;
+    if (rY < 1000 && rX < 1000 && -1000 < rY && -1000 < rX) {
+        rY += 0.000001;
+        xtoy = rX / rY;
+    } else exist = false;
+    VelY = std::sqrt(VEL * VEL / (1 + xtoy * xtoy));
+    (rY) > 0 ? VelY = -VelY : 0;
     visual = VelY;
     VelX = VelY * xtoy;
     Pos.x += VelX;
     Pos.y += VelY;
 }
 
-/*void Bullet::nearest() {
+void Bullet::nearest() {
+    int near = 1000000, temp, pot_target=0;
     for (int i=0; i<255; ++i){
-        game->Enemy_Array[i]->Pos.x
+        if (game->Enemy_Array[i]) {
+            temp = (game->Enemy_Array[i]->Pos.x - Pos.x) * (game->Enemy_Array[i]->Pos.x - Pos.x) +
+                   (game->Enemy_Array[i]->Pos.y - Pos.y) * (game->Enemy_Array[i]->Pos.y - Pos.y);
+            temp < near && !game->Enemy_Array[i]->dying ? near = temp, pot_target = i : 0;
+        }
     }
-}*/
+    target = game->Enemy_Array[pot_target];
+    ptarget = &game->Enemy_Array[pot_target];
+}
 
 

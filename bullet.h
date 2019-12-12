@@ -10,9 +10,9 @@ SDL_Texture *MBullet_Texture = nullptr;
 
 class Bullet {
 public:
-    int VEL = 8;
+    float VEL = 14;
 
-    Bullet(Enemy *tar, int x, int y);
+    Bullet(Enemy **tar, int x, int y);
 
     void render();
 
@@ -23,10 +23,12 @@ public:
     bool exist = true;
 
 private:
-    Enemy *target;  //二级指针防止飞弹
+    Enemy **ptarget; //二级指针防止飞弹
+    Enemy *target;
+    SDL_Point Center;
     SDL_Texture *texture;
-    float VelX;
-    float VelY;
+    double VelX;
+    double VelY;
     SDL_Rect Pos = {0, 0, 16, 15};  //位置
 
 };

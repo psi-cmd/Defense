@@ -75,7 +75,7 @@ void Enemy::move(struct circle Circle) {
 }
 
 void Enemy::render() {
-    if (Health <= 0) {
+    if (Health <= 0 || Pos.y > 870) {
         PicOrder < (Picture_max - 2) * 2 ? PicOrder = (Picture_max - 2) * 2 : 0;  //设定死亡动画只有两帧。
         dying = true;
         death();
@@ -93,23 +93,15 @@ void Enemy::death() {
     delete this;
 }
 
-bool Enemy::escaping(int x, int y) {
-    return (x - Pos.x) * (x - Pos.x) +
-           (y - Pos.y) * (y - Pos.y) >
-           (x - Pos.x - VelX) * (x - Pos.x - VelX) +
-           (y - Pos.y - VelY) * (y - Pos.y - VelY);
-
-}
-
-/*Enemy::~Enemy() {
-//    free(Pos);
-}*/
 
 Enemy1::Enemy1(int n) : Enemy(n) {
     Texture_Set = DevilTexture;
     Picture_max = Enemy1_pic;
+    SDL_QueryTexture(Texture_Set[0], nullptr, nullptr, &(Center.x), &(Center.y));
+    Center.x /= 2;
+    Center.y /= 2;
     Health = 30;
-    VEL = 10;
+    VEL = 1;
     VelX = -VEL;
     X = Pos.x;
     Y = Pos.y;
@@ -120,5 +112,7 @@ void Enemy1::death() {
         SDL_RenderCopy(gRenderer, Texture_Set[PicOrder++ / 2], nullptr, &Pos);
         return;
     }
+    if (Pos.y > 870)
+        game->life--;
     Enemy::death();
 }

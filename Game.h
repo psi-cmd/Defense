@@ -1,7 +1,5 @@
 #include "enemy.h"
 #include "bullet.h"
-//#include <vector>
-//#include <
 
 #ifndef START_GAME_H
 #define START_GAME_H

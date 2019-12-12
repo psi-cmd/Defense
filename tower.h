@@ -64,7 +64,7 @@ public:
     void shoot();
 
     TowerType type = None;
-    Enemy *target = nullptr;
+    Enemy **target = nullptr;
 
     int attackX;
     int attackY;  //射击中心

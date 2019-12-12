@@ -113,9 +113,7 @@ bool loadMedia() {
 }
 
 int WinMain(int argc, char **argv) {
-    int x, y;
     srand(time(nullptr));
-    bool pause=false;
     if (!init()) {
         cout << "failed to initialize!" << endl;
     } else {
@@ -128,7 +126,6 @@ int WinMain(int argc, char **argv) {
     SDL_RenderClear(gRenderer);
     SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染器开始背景
     SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染器开始按钮
-    int flag = 1;
     while (!Quit)   //游戏进入界面循环
     {
         if (SDL_PollEvent(&e) != 0) {
@@ -136,8 +133,8 @@ int WinMain(int argc, char **argv) {
                 Quit = true;
             }
             if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
-                SDL_GetMouseState(&x, &y);
-                if ((x > 374) && (x < 626) && (y > 390) && (y < 513)) break;
+                SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
+                if (SDL_PointInRect(&Mouse_Point, &startpos)) break;
             }
         }
         SDL_RenderPresent(gRenderer);
@@ -147,40 +144,35 @@ int WinMain(int argc, char **argv) {
             if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
                 Quit = true;
             }
-            if (e.key.keysym.sym == SDLK_p) {
-                pause = true;
-            }
-            if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.type == SDL_MOUSEBUTTONDOWN || e.key.keysym.sym == SDLK_p) {
                 if (e.button.button == SDL_BUTTON_LEFT) {
-                    SDL_GetMouseState(&x, &y);
-                    if ((x > 900) && (x < 950) && (y > 30) && (y < 76)) {
+                    SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
+                    if (SDL_PointInRect(&Mouse_Point, &pausepos)) {
+                        _time = SDL_GetTicks() - _time;
                         pause = true;
                         SDL_RenderCopy(gRenderer, re, nullptr, &repos);
                         SDL_RenderPresent(gRenderer);
                     }
-                    game->Tower_Build(Magic, x, y);
+                    game->Tower_Build(Magic, (Mouse_Point.x), (Mouse_Point.y));
                 }
             }
-            if (pause) {
-                while (!Quit) {
-                    if (SDL_PollEvent(&e) != 0) {
-                        if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
-                        if (e.type == SDL_MOUSEBUTTONDOWN) {
-                            if (e.button.button == SDL_BUTTON_LEFT) {
-                                SDL_GetMouseState(&x, &y);
-                                if ((x > 353) && (x < 647) && (y > 374) && (y < 483)) {
-                                    pause = false;
-                                    break;
-                                }
-                            }
+            while (!Quit && pause) {
+                if (SDL_PollEvent(&e) != 0) {
+                    if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
+                    if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
+                        SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
+                        if (SDL_PointInRect(&Mouse_Point, &repos)) {
+                            _time = SDL_GetTicks() - _time;
+                            pause = false;
+                            break;
                         }
                     }
                 }
             }
         }
-        if (SDL_GetTicks() - _time >= 10) {
-            refresh();
+        if (SDL_GetTicks() - _time >= 60) {
             _time = SDL_GetTicks();
+            refresh();
         }
     }
     close();

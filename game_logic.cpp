@@ -25,7 +25,7 @@ void loadSingle() {
     }
     startbg = loadTexture(startbgfile);
     starticon = loadTexture(starticonfile);
-    pause = loadTexture(pausefile);
+    pause_pic = loadTexture(pausefile);
     re = loadTexture(refile);
     statef = loadTexture(statefile);
     defeat = loadTexture(defeatfile);
@@ -40,7 +40,7 @@ void loadSingle() {
 void refresh() {
     SDL_RenderClear(gRenderer);
     SDL_RenderCopy(gRenderer, map, nullptr, nullptr);  //渲染器加载地图
-    SDL_RenderCopy(gRenderer, pause, nullptr, &pausepos);  //暂停按钮
+    SDL_RenderCopy(gRenderer, pause_pic, nullptr, &pausepos);  //暂停按钮
     SDL_RenderCopy(gRenderer, statef, nullptr, &statepos);  //血量栏
 //    pWinorLose(defeat);   //输赢
     wave(2, 7);
@@ -48,7 +48,6 @@ void refresh() {
     game->Detect();
     game->Render();
     SDL_RenderPresent(gRenderer);
-    SDL_Delay(50);
 }
 
 bool In_Rect(int x, int y, SDL_Rect *rect) {
