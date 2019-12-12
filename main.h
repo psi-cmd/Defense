@@ -6,6 +6,7 @@
 #include "tower.h"
 #include "Game.h"
 #include "bullet.h"
+//#include "picture_change.h"
 #include <ctime>
 #include <random>
 
@@ -15,8 +16,7 @@ SDL_Point Mouse_Point;
 //声明：有关游戏逻辑的函数，函数命名一律以“名词——动词（）”方式进行。
 SDL_Window *gWindow = nullptr;  //窗体
 SDL_Texture *map = nullptr;
-std::string mapfile = R"(..\image\map_demo.png)";
-std::string towergroundfile = R"(..\image\raw.png)";
+
 SDL_Texture *startbg = nullptr;
 SDL_Texture *starticon = nullptr;
 SDL_Texture *pause_pic = nullptr;
@@ -27,7 +27,10 @@ SDL_Texture *defeat = nullptr;
 SDL_Texture *victory = nullptr;
 SDL_Texture *again = nullptr;
 SDL_Texture *quit = nullptr;
+SDL_Texture *choice = nullptr;
 
+std::string mapfile = R"(..\image\map_demo.png)";
+std::string towergroundfile = R"(..\image\raw.png)";
 std::string startbgfile = R"(..\image\startbg_demo.jpg)";
 std::string starticonfile = R"(..\image\starticon.png)";
 std::string pausefile = R"(..\image\pause.png)";
@@ -41,32 +44,38 @@ std::string defeatfile = R"(..\image\defeat.png)";
 std::string victoryfile = R"(..\image\victory.png)";
 std::string againfile = R"(..\image\again.png)";
 std::string quitfile = R"(..\image\quit.png)";
+std::string choicefile = R"(..\image\choice.png)";
 
 SDL_Rect WayPoint[20] = {850, 290, 35, 30};
-SDL_Rect startpos = {374, 390, 252, 123};
-SDL_Rect pausepos = {900, 30, 50, 46};
-SDL_Rect repos = {353, 374, 295, 109};
-SDL_Rect statepos = {30, 30, 276, 96};
-SDL_Rect lifepos[3] = {104, 50, 13, 19,
-                       117, 50, 13, 19,
-                       130, 50, 13, 19,};
-SDL_Rect moneypos[4] = {200, 50, 13, 19,
-                        213, 50, 13, 19,
-                        226, 50, 13, 19,
-                        239, 50, 13, 19};
-
-SDL_Rect wavepos[2] = {182, 92, 13, 19,
-                       212, 92, 13, 19};
-SDL_Rect resultpos[3] = {250, 190, 500, 172,
-                         340, 400, 320, 95,
-                         340, 540, 320, 95};
-
+SDL_Rect startpos = {374,390,252,123};
+SDL_Rect pausepos = {900,30,50,46};
+SDL_Rect repos = {353,374,295,109};
+SDL_Rect statepos = {30,30,276,96};
+SDL_Rect lifepos[3] = {104,50,13,19,
+                       117,50,13,19,
+                       130,50,13,19,};
+SDL_Rect moneypos[3] = {200,50,13,19,
+                        213,50,13,19,
+                        226,50,13,19};
+SDL_Rect wavepos[2] = {182,92,13,19,
+                       212,92,13,19};
+SDL_Rect resultpos[3] = {250,190,500,172,
+                         340,400,320,95,
+                         340,540,320,95};
+SDL_Rect choicepos[Tower_point] = {570, 134, 115, 147,
+                                   570, 193, 115, 147,
+                                   369, 157, 115, 147,
+                                   303, 312, 115, 147,
+                                   391, 472, 115, 147,
+                                   481, 452, 115, 147,
+                                   502, 615, 115, 147,};
 
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 857;
 
 bool Quit = false;
 bool pause=false;
+int menu_open=0;
 
 SDL_Event e;
 auto *game = new Game;

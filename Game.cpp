@@ -79,8 +79,12 @@ void Game::Render() {
 }
 
 void Game::Tower_Build(TowerType type, int x, int y) {
+    if (menu_open){
+        if (SDL_PointInRect(&Mouse_Point, &))
+    }
     for (int i=0; i<Tower_point; ++i){
-        if (In_Rect(x, y, Tower_Array[i]->rect)){
+        if (SDL_PointInRect(&Mouse_Point, Tower_Array[i]->rect)){
+
             Tower_Array[i]->buildTower(type);
             return;
         }
@@ -107,5 +111,8 @@ void Game::Detect() {
 }
 
 
+/*Menu::Menu(SDL_Rect *attach) {
+    attached = attach;
+    Mtower_icon =
 
-
+}*/

@@ -4,6 +4,7 @@
 
 Tower::Tower(int n) {
     rect = &TowerPosition[n];
+
 }
 
 #define DILUTE 2
@@ -25,6 +26,7 @@ void Tower::buildTower(TowerType tower_type) {
         case Barracks:
             break;
         case Canon:
+            Ctower_Init();
             break;
         case Magic:
             Mtower_Init();
@@ -63,6 +65,9 @@ void Tower::Mtower_Init() {
     game->money -= 500;
     type = Magic;
     Texture_Now = TowerStaticTexture[1];
+    SDL_QueryTexture(Texture_Now, nullptr, nullptr, &(Center.x), &(Center.y));
+    Center.x /= 2;
+    Center.y /= 2;
     Man_rect = *rect;
     Man_rect.x += 30;
     Man_rect.y -= 18;
@@ -71,6 +76,11 @@ void Tower::Mtower_Init() {
     attackX = rect->x + 44;
     attackY = rect->y + 12;
     Man_in_Tower = MtowerManTexture[0];
+}
+
+void Tower::Ctower_Init() {
+    type = Canon;
+    Texture_Now = TowerStaticTexture[2];
 }
 
 void Tower::shoot() {

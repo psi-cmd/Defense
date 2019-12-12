@@ -41,8 +41,17 @@ public:
     int life = 10;
 private:
     Uint32 Refresh_Tick = 0;
-    int Enemy_Count = 100;
+    int Enemy_Count = 10;
     int Interval = 2000;
 };
 
+/*class Menu
+{
+    Menu(SDL_Rect *attach);
+public:
+    SDL_Rect *attached;
+    SDL_Rect *Mtower_icon;
+    SDL_Rect *Cannon_icon;
+    SDL_Rect *Sell_icon;
+};*/
 #endif //START_GAME_H

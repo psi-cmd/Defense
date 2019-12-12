@@ -2,6 +2,7 @@
 #define START_TOWER_H
 
 #define MTower_pic 5
+#define CTower_pic 2
 #define MTower_Man_pic 10
 #define Tower_point 7
 
@@ -28,6 +29,11 @@ std::string MtowerPicture[MTower_pic] = {
         R"(..\image\Mtower4.png)"
 };
 
+std::string CtowerPicture[CTower_pic] = {
+        R"(..\image\Ctower0.png)",
+        R"(..\image\Ctower1.png)",
+};
+
 std::string MtowerMan_pic[MTower_Man_pic] = {  //不要忘了逗号！
         R"(..\image\M1.png)",
         R"(..\image\M2.png)",
@@ -43,6 +49,7 @@ std::string MtowerMan_pic[MTower_Man_pic] = {  //不要忘了逗号！
 
 
 SDL_Texture *MtowerTexture[MTower_pic];
+SDL_Texture *CtowerTexture[CTower_pic];
 
 SDL_Texture *MtowerManTexture[MTower_Man_pic];
 
@@ -61,6 +68,8 @@ public:
 
     void Mtower_Init();
 
+    void Ctower_Init()
+
     void shoot();
 
     TowerType type = None;
@@ -69,6 +78,8 @@ public:
     int attackX;
     int attackY;  //射击中心
     SDL_Rect *rect;  //对应坐标
+    bool build_menu=false;
+    SDL_Point Center;
 private:
     int state = 0;
     float HtoW = 5.0 / 9;

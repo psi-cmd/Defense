@@ -14,6 +14,7 @@
 #include "game_logic.cpp"
 #include "Game.cpp"
 #include "bullet.cpp"
+//#include "picture_change.cpp"
 
 using namespace std;
 
@@ -107,8 +108,10 @@ bool loadMedia() {
     int success = true;
     loadTextures(DevilPicture, DevilTexture, Enemy1_pic);
     loadTextures(MtowerPicture, MtowerTexture, MTower_pic);
+    loadTextures(CtowerPicture, CtowerTexture, CTower_pic);
     loadTextures(MtowerMan_pic, MtowerManTexture, MTower_Man_pic);
     TowerStaticTexture[1] = MtowerTexture[0];
+    TowerStaticTexture[2] = CtowerTexture[0];
     return success;
 }
 
@@ -126,6 +129,7 @@ int WinMain(int argc, char **argv) {
     SDL_RenderClear(gRenderer);
     SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染器开始背景
     SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染器开始按钮
+    int tnum=-1,i;
     while (!Quit)   //游戏进入界面循环
     {
         if (SDL_PollEvent(&e) != 0) {

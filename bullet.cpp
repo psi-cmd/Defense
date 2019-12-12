@@ -57,13 +57,17 @@ void Bullet::move() {
 }
 
 void Bullet::nearest() {
-    int near = 1000000, temp, pot_target=0;
-    for (int i=0; i<255; ++i){
+    int near = 1000000, temp, pot_target=-1;
+    for (int i=0; i<256; ++i){
         if (game->Enemy_Array[i]) {
             temp = (game->Enemy_Array[i]->Pos.x - Pos.x) * (game->Enemy_Array[i]->Pos.x - Pos.x) +
                    (game->Enemy_Array[i]->Pos.y - Pos.y) * (game->Enemy_Array[i]->Pos.y - Pos.y);
             temp < near && !game->Enemy_Array[i]->dying ? near = temp, pot_target = i : 0;
         }
+    }
+    if (pot_target == -1) {
+        exist = 0;
+        return;
     }
     target = game->Enemy_Array[pot_target];
     ptarget = &game->Enemy_Array[pot_target];
