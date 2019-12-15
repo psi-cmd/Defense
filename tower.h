@@ -13,6 +13,15 @@ SDL_Rect TowerPosition[Tower_point] = {580, 181, 90, 50,
                                        401, 519, 90, 50,
                                        491, 499, 90, 50,
                                        512, 662, 90, 50};
+
+SDL_Rect choicepos[Tower_point] = {570, 134, 115, 147,
+                                   570, 193, 115, 147,
+                                   369, 157, 115, 147,
+                                   303, 312, 115, 147,
+                                   391, 472, 115, 147,
+                                   481, 452, 115, 147,
+                                   502, 615, 115, 147,};
+
 enum TowerType {
     None,
     Arrow,
@@ -68,7 +77,7 @@ public:
 
     void Mtower_Init();
 
-    void Ctower_Init()
+    void Ctower_Init();
 
     void shoot();
 

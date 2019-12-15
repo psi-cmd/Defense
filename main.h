@@ -17,17 +17,17 @@ SDL_Point Mouse_Point;
 SDL_Window *gWindow = nullptr;  //窗体
 SDL_Texture *map = nullptr;
 
-SDL_Texture *startbg = nullptr;
-SDL_Texture *starticon = nullptr;
-SDL_Texture *pause_pic = nullptr;
-SDL_Texture *re = nullptr;
-SDL_Texture *statef = nullptr;
-SDL_Texture *numf[10] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-SDL_Texture *defeat = nullptr;
-SDL_Texture *victory = nullptr;
-SDL_Texture *again = nullptr;
-SDL_Texture *quit = nullptr;
-SDL_Texture *choice = nullptr;
+SDL_Texture *startbg;
+SDL_Texture *starticon;
+SDL_Texture *pause_pic;
+SDL_Texture *re;
+SDL_Texture *statef;
+SDL_Texture *numf[10];
+SDL_Texture *defeat;
+SDL_Texture *victory;
+SDL_Texture *again;
+SDL_Texture *quit;
+SDL_Texture *choice_ring;
 
 std::string mapfile = R"(..\image\map_demo.png)";
 std::string towergroundfile = R"(..\image\raw.png)";
@@ -62,20 +62,18 @@ SDL_Rect wavepos[2] = {182,92,13,19,
 SDL_Rect resultpos[3] = {250,190,500,172,
                          340,400,320,95,
                          340,540,320,95};
-SDL_Rect choicepos[Tower_point] = {570, 134, 115, 147,
-                                   570, 193, 115, 147,
-                                   369, 157, 115, 147,
-                                   303, 312, 115, 147,
-                                   391, 472, 115, 147,
-                                   481, 452, 115, 147,
-                                   502, 615, 115, 147,};
+
+SDL_Rect choice_icon[choice_total] = {
+        36, 0, 43, 47,
+        36, 100, 43, 47
+};
 
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 857;
 
 bool Quit = false;
 bool pause=false;
-int menu_open=0;
+int menu_open=-1;
 
 SDL_Event e;
 auto *game = new Game;

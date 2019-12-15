@@ -159,6 +159,7 @@ int WinMain(int argc, char **argv) {
                     }
                     game->Tower_Build(Magic, (Mouse_Point.x), (Mouse_Point.y));
                 }
+                Mouse_Point.x = 0; Mouse_Point.y = 0;
             }
             while (!Quit && pause) {
                 if (SDL_PollEvent(&e) != 0) {

@@ -79,14 +79,18 @@ void Game::Render() {
 }
 
 void Game::Tower_Build(TowerType type, int x, int y) {
-    if (menu_open){
-        if (SDL_PointInRect(&Mouse_Point, &))
+    if (menu_open >= 0 && Mouse_Point.x && Mouse_Point.y){
+        if (icon_clicked(&choice_icon[choice_Mtower])){
+            Tower_Array[menu_open]->buildTower(Magic);
+        } else if (icon_clicked(&choice_icon[choice_Cannon])){
+            Tower_Array[menu_open]->buildTower(Canon);
+        }
+        menu_open = -1;
+        return;
     }
     for (int i=0; i<Tower_point; ++i){
         if (SDL_PointInRect(&Mouse_Point, Tower_Array[i]->rect)){
-
-            Tower_Array[i]->buildTower(type);
-            return;
+            menu_open = i;
         }
     }
 }
@@ -111,8 +115,7 @@ void Game::Detect() {
 }
 
 
-/*Menu::Menu(SDL_Rect *attach) {
-    attached = attach;
-    Mtower_icon =
-
-}*/
+bool icon_clicked(SDL_Rect *chosen_icon){
+    SDL_Rect temp = relative_rect(TowerPosition[menu_open].x-10, TowerPosition[menu_open].y-47, chosen_icon);
+    return SDL_PointInRect(&Mouse_Point, &temp);
+}

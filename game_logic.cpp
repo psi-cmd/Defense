@@ -6,8 +6,6 @@ extern void wave(int m, int n);
 
 extern void pWinorLose(SDL_Texture *pic);
 
-bool In_Rect(int x, int y, SDL_Rect *rect);
-
 void loadSingle() {
     map = loadTexture(mapfile);
     if (map == nullptr) {
@@ -32,8 +30,8 @@ void loadSingle() {
     victory = loadTexture(victoryfile);
     again = loadTexture(againfile);
     quit = loadTexture(quitfile);
-    int i;
-    for (i = 0; i < 10; i++) numf[i] = loadTexture(numffile[i]);
+    choice_ring = loadTexture(choicefile);
+    for (int i = 0; i < 10; i++) numf[i] = loadTexture(numffile[i]);
 
 }
 
@@ -47,11 +45,10 @@ void refresh() {
     game->Enemy_Wave();
     game->Detect();
     game->Render();
+    if (menu_open >= 0){
+        SDL_RenderCopy(gRenderer, choice_ring, nullptr, &choicepos[menu_open]);
+    }
     SDL_RenderPresent(gRenderer);
-}
-
-bool In_Rect(int x, int y, SDL_Rect *rect) {
-    return x > rect->x && y > rect->y && x - rect->x < rect->w && y - rect->y < rect->h;
 }
 
 void Print_Dec(int n, SDL_Rect *pos) {
@@ -88,4 +85,11 @@ void pWinorLose(SDL_Texture *pic)  //打印失败标志
     SDL_RenderCopy(gRenderer, pic, nullptr, resultpos);
     SDL_RenderCopy(gRenderer, again, nullptr, resultpos + 1);
     SDL_RenderCopy(gRenderer, quit, nullptr, resultpos + 2);
+}
+
+SDL_Rect relative_rect(int x, int y, SDL_Rect *inner_rect){
+    SDL_Rect return_rect = *inner_rect;
+    return_rect.x += x;
+    return_rect.y += y;
+    return return_rect;
 }

@@ -4,6 +4,15 @@
 #ifndef START_GAME_H
 #define START_GAME_H
 
+
+enum choice_icon{
+    choice_Mtower,
+    choice_Cannon,
+    choice_sell,
+    choice_total
+};
+
+bool icon_clicked(SDL_Rect *chosen_icon);
 //是什么对象管什么事，不能让别人插手（指设定私有变量）
 //game类响应鼠标事件，所管辖的其他类不得响应鼠标事件。
 
