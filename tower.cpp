@@ -32,6 +32,7 @@ void Tower::buildTower(TowerType tower_type) {
             break;
     }
     Update_Rect(&self_rect);
+    tower_level = true;
 }
 
 
@@ -82,6 +83,3 @@ void Tower::Ctower_Init() {
     Texture_Now = TowerStaticTexture[2];
 }
 
-void Tower::shoot() {
-
-}

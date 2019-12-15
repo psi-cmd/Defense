@@ -159,7 +159,7 @@ int WinMain(int argc, char **argv) {
                         SDL_RenderCopy(gRenderer, re, nullptr, &repos);
                         SDL_RenderPresent(gRenderer);
                     }
-                    game->Tower_Build(Magic, (Mouse_Point.x), (Mouse_Point.y));
+                    game->Tower_Build();
                 }
                 Mouse_Point.x = 0;
                 Mouse_Point.y = 0;
@@ -169,18 +169,22 @@ int WinMain(int argc, char **argv) {
                     pWinorLose(defeat);
                     SDL_RenderPresent(gRenderer);
                 }
+                if (game->win){
+                    pWinorLose(victory);
+
+                }
                 if (SDL_PollEvent(&e) != 0) {
                     if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
                     if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
                         SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
-                        if (SDL_PointInRect(&Mouse_Point, &resultpos[1])){
+                        if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[1])) || game->win){
                             game->Restart();
 //                            goto again;
                         }
-                        if (SDL_PointInRect(&Mouse_Point, &resultpos[2])){
+                        if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[2])) || game->win){
                             Quit = true;
                         }
-                        if (SDL_PointInRect(&Mouse_Point, &repos)) {
+                        if (game->life > 0 && SDL_PointInRect(&Mouse_Point, &repos)) {
                             _time = SDL_GetTicks() - _time;
                             pause = false;
                             break;

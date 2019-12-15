@@ -101,11 +101,11 @@ Enemy1::Enemy1(int n) : Enemy(n) {
     Center.x /= 2;
     Center.y /= 2;
     Health = 30;
-    VEL = 40;
+    VEL = 1;
     VelX = -VEL;
     X = Pos.x;
     Y = Pos.y;
-    life_cost = 10;
+    life_cost = 1;
 }
 
 void Enemy1::death() {

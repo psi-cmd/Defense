@@ -79,8 +79,6 @@ public:
 
     void Ctower_Init();
 
-    void shoot();
-
     TowerType type = None;
     Enemy **target = nullptr;
 
@@ -89,6 +87,7 @@ public:
     bool build_menu=false;
     SDL_Point Center;
     SDL_Rect self_rect;    //对应坐标
+    int tower_level = false;
 private:
     int state = 0;
     float HtoW = 5.0 / 9;

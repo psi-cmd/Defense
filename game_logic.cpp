@@ -40,7 +40,6 @@ void refresh() {
     SDL_RenderCopy(gRenderer, map, nullptr, nullptr);  //渲染器加载地图
     SDL_RenderCopy(gRenderer, pause_pic, nullptr, &pausepos);  //暂停按钮
     SDL_RenderCopy(gRenderer, statef, nullptr, &statepos);  //血量栏
-//    pWinorLose(defeat);   //输赢
     wave(2, 7);
     game->Enemy_Wave();
     game->Detect();
@@ -52,6 +51,8 @@ void refresh() {
     if (game->life<=0){
         pause = true;
     }
+    if (game->If_No_Enemy())
+        game->Enemy_Count = 10;
 }
 
 void Print_Dec(int n, SDL_Rect *pos) {

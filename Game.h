@@ -27,7 +27,7 @@ public:
 
     void Enemy_Wave();
 
-    void Tower_Build(TowerType type, int x, int y);
+    void Tower_Build();
 
     void Exit_Game(int n);
 
@@ -36,6 +36,8 @@ public:
     void Tower_init();
 
     void Detect();   //所有非用户事件产生器
+
+    bool If_No_Enemy();
 
 
     unsigned char Enemy_Num = 0;
@@ -49,9 +51,10 @@ public:
     unsigned char Bullet_point = 0; //指向下一个子弹空位
     int money = 2000;
     int life = 10;
+    int Enemy_Count = 10;
+    int win=false;
 private:
     Uint32 Refresh_Tick = 0;
-    int Enemy_Count = 10;
     int Interval = 2000;
 };
 
