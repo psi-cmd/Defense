@@ -101,10 +101,11 @@ Enemy1::Enemy1(int n) : Enemy(n) {
     Center.x /= 2;
     Center.y /= 2;
     Health = 30;
-    VEL = 1;
+    VEL = 40;
     VelX = -VEL;
     X = Pos.x;
     Y = Pos.y;
+    life_cost = 10;
 }
 
 void Enemy1::death() {
@@ -113,6 +114,6 @@ void Enemy1::death() {
         return;
     }
     if (Pos.y > 870)
-        game->life--;
+        game->life -= life_cost;
     Enemy::death();
 }

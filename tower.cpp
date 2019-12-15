@@ -3,18 +3,17 @@
 
 
 Tower::Tower(int n) {
-    rect = &TowerPosition[n];
-
+    self_rect = TowerPosition[n];
 }
 
 #define DILUTE 2
 
 void Tower::attack() {  //attack 由render掌管
-    PicOrder / DILUTE < 5 ? SDL_RenderCopy(gRenderer, MtowerTexture[(int) (PicOrder / DILUTE)], nullptr, rect) :
-    SDL_RenderCopy(gRenderer, Texture_Now, nullptr, rect);
+    PicOrder / DILUTE < 5 ? SDL_RenderCopy(gRenderer, MtowerTexture[(int) (PicOrder / DILUTE)], nullptr, &self_rect) :
+    SDL_RenderCopy(gRenderer, Texture_Now, nullptr, (&self_rect));
     SDL_RenderCopy(gRenderer, MtowerManTexture[(int) (PicOrder / DILUTE)], nullptr, &Man_rect);
     if ((float) PicOrder / DILUTE == 5) {
-        game->Bullet_Array[game->Bullet_point++] = new Bullet(target, rect->x + 38, rect->y + 0);
+        game->Bullet_Array[game->Bullet_point++] = new Bullet(target, (&self_rect)->x + 38, (&self_rect)->y + 0);
     }
     PicOrder / DILUTE < 9 ? PicOrder++ : PicOrder = 0, target = nullptr;
 }
@@ -32,7 +31,7 @@ void Tower::buildTower(TowerType tower_type) {
             Mtower_Init();
             break;
     }
-    Update_Rect(rect);
+    Update_Rect(&self_rect);
 }
 
 
@@ -48,7 +47,7 @@ void Tower::Update_Rect(SDL_Rect *r) {
 void Tower::render() {
     if (target == nullptr || CDstart > 0) {
         CDstart--;
-        SDL_RenderCopy(gRenderer, Texture_Now, nullptr, rect);
+        SDL_RenderCopy(gRenderer, Texture_Now, nullptr, &self_rect);
         if (type == Magic) {
             SDL_RenderCopy(gRenderer, Man_in_Tower, nullptr, &Man_rect);
         }
@@ -68,13 +67,13 @@ void Tower::Mtower_Init() {
     SDL_QueryTexture(Texture_Now, nullptr, nullptr, &(Center.x), &(Center.y));
     Center.x /= 2;
     Center.y /= 2;
-    Man_rect = *rect;
+    Man_rect = self_rect;
     Man_rect.x += 30;
     Man_rect.y -= 18;
     Man_rect.h = 30;
     Man_rect.w = 30;
-    attackX = rect->x + 44;
-    attackY = rect->y + 12;
+    attackX = (&self_rect)->x + 44;
+    attackY = (&self_rect)->y + 12;
     Man_in_Tower = MtowerManTexture[0];
 }
 

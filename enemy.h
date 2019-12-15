@@ -74,6 +74,7 @@ protected:
     double X, Y;
     int Picture_max;
     SDL_Texture **Texture_Set;
+    int life_cost=1;
 };
 
 class Enemy1 : public Enemy {

@@ -6,7 +6,7 @@
 #define MTower_Man_pic 10
 #define Tower_point 7
 
-SDL_Rect TowerPosition[Tower_point] = {580, 181, 90, 50,
+static SDL_Rect TowerPosition[Tower_point] = {580, 181, 90, 50,
                                        580, 240, 90, 50,
                                        379, 204, 90, 50,
                                        313, 359, 90, 50,
@@ -14,7 +14,7 @@ SDL_Rect TowerPosition[Tower_point] = {580, 181, 90, 50,
                                        491, 499, 90, 50,
                                        512, 662, 90, 50};
 
-SDL_Rect choicepos[Tower_point] = {570, 134, 115, 147,
+static SDL_Rect choicepos[Tower_point] = {570, 134, 115, 147,
                                    570, 193, 115, 147,
                                    369, 157, 115, 147,
                                    303, 312, 115, 147,
@@ -86,9 +86,9 @@ public:
 
     int attackX;
     int attackY;  //射击中心
-    SDL_Rect *rect;  //对应坐标
     bool build_menu=false;
     SDL_Point Center;
+    SDL_Rect self_rect;    //对应坐标
 private:
     int state = 0;
     float HtoW = 5.0 / 9;

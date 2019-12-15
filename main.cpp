@@ -103,6 +103,7 @@ bool loadTextures(std::string *picture_path, SDL_Texture **texture_array, int n)
 }
 
 
+
 bool loadMedia() {
     loadSingle();
     int success = true;
@@ -127,9 +128,10 @@ int WinMain(int argc, char **argv) {
     game->Tower_init();
     start = _time = SDL_GetTicks();
     SDL_RenderClear(gRenderer);
-    SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染器开始背景
-    SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染器开始按钮
-    int tnum=-1,i;
+    SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染开始背景
+    SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染开始按钮
+    int tnum = -1, i;
+//again:
     while (!Quit)   //游戏进入界面循环
     {
         if (SDL_PollEvent(&e) != 0) {
@@ -159,19 +161,33 @@ int WinMain(int argc, char **argv) {
                     }
                     game->Tower_Build(Magic, (Mouse_Point.x), (Mouse_Point.y));
                 }
-                Mouse_Point.x = 0; Mouse_Point.y = 0;
+                Mouse_Point.x = 0;
+                Mouse_Point.y = 0;
             }
             while (!Quit && pause) {
+                if (game->life <= 0) {
+                    pWinorLose(defeat);
+                    SDL_RenderPresent(gRenderer);
+                }
                 if (SDL_PollEvent(&e) != 0) {
                     if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
                     if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
                         SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
+                        if (SDL_PointInRect(&Mouse_Point, &resultpos[1])){
+                            game->Restart();
+//                            goto again;
+                        }
+                        if (SDL_PointInRect(&Mouse_Point, &resultpos[2])){
+                            Quit = true;
+                        }
                         if (SDL_PointInRect(&Mouse_Point, &repos)) {
                             _time = SDL_GetTicks() - _time;
                             pause = false;
                             break;
                         }
                     }
+                    Mouse_Point.x = 0;
+                    Mouse_Point.y = 0;
                 }
             }
         }

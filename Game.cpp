@@ -43,6 +43,8 @@ void Game::Enemy_Add(Enemy_Type n) {
 
 void Game::Tower_init() {
     for (int i = 0; i < Tower_point; ++i) {
+        if (Tower_Array[i])
+            delete Tower_Array[i];
         Tower_Array[i] = new Tower(i);
     }
 }
@@ -89,7 +91,7 @@ void Game::Tower_Build(TowerType type, int x, int y) {
         return;
     }
     for (int i=0; i<Tower_point; ++i){
-        if (SDL_PointInRect(&Mouse_Point, Tower_Array[i]->rect)){
+        if (SDL_PointInRect(&Mouse_Point, &(Tower_Array[i]->self_rect))){
             menu_open = i;
         }
     }
@@ -112,6 +114,23 @@ void Game::Detect() {
         }
     }
 
+}
+
+void Game::Restart() {
+    for (int i=0; i<256; ++i){
+        if (Enemy_Array[i]){
+            delete Enemy_Array[i];
+            Enemy_Array[i] = nullptr;
+        }
+        if (Bullet_Array[i]){
+            delete Bullet_Array[i];
+            Bullet_Array[i] = nullptr;
+        }
+    }
+    Tower_init();
+    life = 10;
+    money = 2000;
+    Enemy_Count = 10;
 }
 
 

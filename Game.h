@@ -22,6 +22,7 @@ class Game  //控制怪刷新，对象array维护，删除。
 public:
     Game();
 
+    void Restart();
     void Enemy_Add(Enemy_Type n);
 
     void Enemy_Wave();

@@ -49,6 +49,9 @@ void refresh() {
         SDL_RenderCopy(gRenderer, choice_ring, nullptr, &choicepos[menu_open]);
     }
     SDL_RenderPresent(gRenderer);
+    if (game->life<=0){
+        pause = true;
+    }
 }
 
 void Print_Dec(int n, SDL_Rect *pos) {
