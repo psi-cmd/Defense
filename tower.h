@@ -2,7 +2,7 @@
 #define START_TOWER_H
 
 #define MTower_pic 5
-#define CTower_pic 2
+#define CTower_pic 5
 #define MTower_Man_pic 10
 #define Tower_point 7
 
@@ -27,7 +27,7 @@ enum TowerType {
     Arrow,
     Barracks,
     Magic,
-    Canon
+    Cannon
 };
 
 std::string MtowerPicture[MTower_pic] = {
@@ -41,6 +41,9 @@ std::string MtowerPicture[MTower_pic] = {
 std::string CtowerPicture[CTower_pic] = {
         R"(..\image\Ctower0.png)",
         R"(..\image\Ctower1.png)",
+        R"(..\image\Ctower2.png)",
+        R"(..\image\Ctower3.png)",
+        R"(..\image\Ctower1.png)"
 };
 
 std::string MtowerMan_pic[MTower_Man_pic] = {  //不要忘了逗号！

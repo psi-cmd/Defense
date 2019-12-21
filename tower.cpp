@@ -9,11 +9,19 @@ Tower::Tower(int n) {
 #define DILUTE 2
 
 void Tower::attack() {  //attack 由render掌管
-    PicOrder / DILUTE < 5 ? SDL_RenderCopy(gRenderer, MtowerTexture[(int) (PicOrder / DILUTE)], nullptr, &self_rect) :
-    SDL_RenderCopy(gRenderer, Texture_Now, nullptr, (&self_rect));
-    SDL_RenderCopy(gRenderer, MtowerManTexture[(int) (PicOrder / DILUTE)], nullptr, &Man_rect);
-    if ((float) PicOrder / DILUTE == 5) {
-        game->Bullet_Array[game->Bullet_point++] = new Bullet(target, (&self_rect)->x + 38, (&self_rect)->y + 0);
+    if (type == Magic) {
+        PicOrder / DILUTE < 5 ? SDL_RenderCopy(gRenderer, MtowerTexture[(int) (PicOrder / DILUTE)], nullptr, &self_rect)
+                              :SDL_RenderCopy(gRenderer, Texture_Now, nullptr, (&self_rect));
+        SDL_RenderCopy(gRenderer, MtowerManTexture[(int) (PicOrder / DILUTE)], nullptr, &Man_rect);
+        if ((float) PicOrder / DILUTE == 5) {
+            game->Bullet_Array[game->Bullet_point++] = new Bullet(target, self_rect.x + 38, self_rect.y + 0);
+        }
+    } else if (type == Cannon){
+        PicOrder / DILUTE < 5 ? SDL_RenderCopy(gRenderer, CtowerTexture[(int) (PicOrder / DILUTE)], nullptr, &self_rect) :
+        SDL_RenderCopy(gRenderer, Texture_Now, nullptr, &self_rect);
+        if ((float) PicOrder / DILUTE == 5) {
+            game->Shell_Array[game->Shell_point++] = new Shell(target, self_rect.x + 38, self_rect.y + 0);
+        }
     }
     PicOrder / DILUTE < 9 ? PicOrder++ : PicOrder = 0, target = nullptr;
 }
@@ -24,7 +32,7 @@ void Tower::buildTower(TowerType tower_type) {
             break;
         case Barracks:
             break;
-        case Canon:
+        case Cannon:
             Ctower_Init();
             break;
         case Magic:
@@ -62,7 +70,7 @@ bool Tower::in_range(SDL_Rect target) {
 }
 
 void Tower::Mtower_Init() {
-    game->money -= 500;
+    game->money -= 100;
     type = Magic;
     Texture_Now = TowerStaticTexture[1];
     SDL_QueryTexture(Texture_Now, nullptr, nullptr, &(Center.x), &(Center.y));
@@ -73,13 +81,19 @@ void Tower::Mtower_Init() {
     Man_rect.y -= 18;
     Man_rect.h = 30;
     Man_rect.w = 30;
-    attackX = (&self_rect)->x + 44;
-    attackY = (&self_rect)->y + 12;
+    attackX = self_rect.x + 44;
+    attackY = self_rect.y + 12;
     Man_in_Tower = MtowerManTexture[0];
 }
 
 void Tower::Ctower_Init() {
-    type = Canon;
+    game->money -= 125;
+    type = Cannon;
     Texture_Now = TowerStaticTexture[2];
+    SDL_QueryTexture(Texture_Now, nullptr, nullptr, &(Center.x), &(Center.y));
+    Center.x /= 2;
+    Center.y /= 2;
+    attackX = self_rect.x + 44;
+    attackY = self_rect.y + 12;
 }
 

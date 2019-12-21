@@ -8,9 +8,11 @@
 #include <cmath>
 
 Game::Game() {
+//    Enemy_Count = Enemy_num[0];
     for (int i = 0; i < 256; Enemy_Array[i] = nullptr, ++i);
 //    for (int j = 0; j < 15; Tower_Array[j] = nullptr, ++j);
     for (int j = 0; j < 256; Bullet_Array[j] = nullptr, ++j);
+    for (int j = 0; j < 256; Shell_Array[j] = nullptr, ++j);
 }
 
 
@@ -19,6 +21,14 @@ void Game::Enemy_Wave() {
         Refresh_Tick = SDL_GetTicks();
         Enemy_Add(Enemy1);
         Enemy_Count--;
+    } else {
+        if (Wave < WAVE) {
+            wave_timer == 0 ? wave_timer = 120, Enemy_Count = Enemy_num[Wave++] : 0;
+            wave_timer--;
+        } else if (If_No_Enemy()){
+            pause = true;
+            game->win = true;
+        }
     }
 }
 
@@ -43,7 +53,7 @@ void Game::Enemy_Add(Enemy_Type n) {
 
 void Game::Tower_init() {
     for (int i = 0; i < Tower_point; ++i) {
-        if (Tower_Array[i])
+        if (Tower_Array[i] && restart)
             delete Tower_Array[i];
         Tower_Array[i] = new Tower(i);
     }
@@ -54,8 +64,6 @@ void Game::Exit_Game(int n) {
 }
 
 void Game::Render() {
-    Print_Dec(life, lifepos);
-    Print_Dec(money, moneypos);
     Enemy_Num = 0;
     do {
         if (Enemy_Array[Enemy_Num] != nullptr) {
@@ -71,22 +79,32 @@ void Game::Render() {
     } while (Tower_Num < Tower_point);
     Tower_Num = 0;
     Bullet_Num = 0;
+    Shell_Num = 0;
     do {
         if (Bullet_Array[Bullet_Num] != nullptr) {
             Bullet_Array[Bullet_Num]->render();
         }
         Bullet_Num++;
     } while (Bullet_Num != 0);
-
+    do {
+        if (Shell_Array[Shell_Num] != nullptr) {
+            Shell_Array[Shell_Num]->render();
+        }
+        Shell_Num++;
+    } while (Shell_Num != 0);
 }
 
 void Game::Tower_Build() {
     if (menu_open >= 0 && Mouse_Point.x && Mouse_Point.y){
         if (icon_clicked(&choice_icon[choice_Mtower])){
+            if (game->money < 100)
+                return;
             Tower_Array[menu_open]->buildTower(Magic);
             Tower_Array[menu_open]->tower_level = 1;
         } else if (icon_clicked(&choice_icon[choice_Cannon])){
-            Tower_Array[menu_open]->buildTower(Canon);
+            if (game->money < 125)
+                return;
+            Tower_Array[menu_open]->buildTower(Cannon);
             Tower_Array[menu_open]->tower_level = 1;
         }
         menu_open = -1;
@@ -119,6 +137,7 @@ void Game::Detect() {
 }
 
 void Game::Restart() {
+    restart = true;
     for (int i=0; i<256; ++i){
         if (Enemy_Array[i]){
             delete Enemy_Array[i];
@@ -130,9 +149,11 @@ void Game::Restart() {
         }
     }
     Tower_init();
-    life = 10;
-    money = 2000;
-    Enemy_Count = 10;
+    life = 6;
+    money = 400;
+    Wave = 0;
+    wave_timer = 0;
+    Enemy_Count = 0;
 }
 
 bool Game::If_No_Enemy() {

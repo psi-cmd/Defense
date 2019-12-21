@@ -8,6 +8,24 @@
 std::string MBullet_Pic = R"(..\image\bullet.png)";
 SDL_Texture *MBullet_Texture = nullptr;
 
+std::string smogfile[5] = {R"(..\image\smog0.png)",R"(..\image\smog1.png)",R"(..\image\smog2.png)",R"(..\image\smog3.png)",R"(..\image\smog4.png)"};
+SDL_Texture *smog[5];
+SDL_Rect smogpos={0,0,12,16};
+
+std::string Smoke_Pic[10] = {
+        R"(..\image\smoke0.png)",
+        R"(..\image\smoke1.png)",
+        R"(..\image\smoke2.png)",
+        R"(..\image\smoke3.png)",
+        R"(..\image\smoke4.png)",
+        R"(..\image\smoke5.png)",
+        R"(..\image\smoke6.png)",
+        R"(..\image\smoke7.png)",
+        R"(..\image\smoke8.png)"
+};
+
+SDL_Texture *Smoke_Texture[10];
+
 class Bullet {
 public:
     float VEL = 14;

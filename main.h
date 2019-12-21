@@ -6,6 +6,7 @@
 #include "tower.h"
 #include "Game.h"
 #include "bullet.h"
+#include "shell.h"
 //#include "picture_change.h"
 #include <ctime>
 #include <random>
@@ -31,8 +32,8 @@ SDL_Texture *choice_ring;
 
 std::string mapfile = R"(..\image\map_demo.png)";
 std::string towergroundfile = R"(..\image\raw.png)";
-std::string startbgfile = R"(..\image\startbg_demo.jpg)";
-std::string starticonfile = R"(..\image\starticon.png)";
+std::string startbgfile = R"(..\image\startbg_demo.png)";
+//std::string starticonfile = R"(..\image\starticon.png)";
 std::string pausefile = R"(..\image\pause.png)";
 std::string refile = R"(..\image\re.png)";
 std::string statefile = R"(..\image\state.png)";
@@ -48,15 +49,20 @@ std::string choicefile = R"(..\image\choice.png)";
 
 SDL_Rect WayPoint[20] = {1020, 290, 35, 30};
 SDL_Rect startpos = {374,390,252,123};
+SDL_Rect difficultypos[3] = {38, 355, 262, 311,
+                          349, 353, 270, 291,
+                          673, 326, 291, 343};
+
 SDL_Rect pausepos = {900,30,50,46};
 SDL_Rect repos = {353,374,295,109};
 SDL_Rect statepos = {30,30,276,96};
-SDL_Rect lifepos[3] = {104,50,13,19,
-                       117,50,13,19,
-                       130,50,13,19,};
-SDL_Rect moneypos[3] = {200,50,13,19,
+SDL_Rect lifepos[3] = {104, 50, 13, 19,
+                       117, 50, 13, 19,
+                       130, 50, 13, 19};
+SDL_Rect moneypos[4] = {200,50,13,19,
                         213,50,13,19,
-                        226,50,13,19};
+                        226,50,13,19,
+                        239,50,13,19};
 SDL_Rect wavepos[2] = {182,92,13,19,
                        212,92,13,19};
 SDL_Rect resultpos[3] = {250,190,500,172,

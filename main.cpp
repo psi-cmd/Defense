@@ -14,6 +14,7 @@
 #include "game_logic.cpp"
 #include "Game.cpp"
 #include "bullet.cpp"
+#include "shell.cpp"
 //#include "picture_change.cpp"
 
 using namespace std;
@@ -111,6 +112,7 @@ bool loadMedia() {
     loadTextures(MtowerPicture, MtowerTexture, MTower_pic);
     loadTextures(CtowerPicture, CtowerTexture, CTower_pic);
     loadTextures(MtowerMan_pic, MtowerManTexture, MTower_Man_pic);
+    loadTextures(Smoke_Pic, Smoke_Texture, 10);
     TowerStaticTexture[1] = MtowerTexture[0];
     TowerStaticTexture[2] = CtowerTexture[0];
     return success;
@@ -130,7 +132,6 @@ int WinMain(int argc, char **argv) {
     SDL_RenderClear(gRenderer);
     SDL_RenderCopy(gRenderer, startbg, nullptr, nullptr);  //渲染开始背景
     SDL_RenderCopy(gRenderer, starticon, nullptr, &startpos);  //渲染开始按钮
-    int tnum = -1, i;
 //again:
     while (!Quit)   //游戏进入界面循环
     {
@@ -140,13 +141,20 @@ int WinMain(int argc, char **argv) {
             }
             if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
                 SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
-                if (SDL_PointInRect(&Mouse_Point, &startpos)) break;
+                if (SDL_PointInRect(&Mouse_Point, &difficultypos[0])){
+                    game->Diff = Casual;
+                } else if (SDL_PointInRect(&Mouse_Point, &difficultypos[1])){
+                    game->Diff = Normal;
+                } else if (SDL_PointInRect(&Mouse_Point, &difficultypos[2])){
+                    game->Diff = Veteran;
+                } else continue;
+                break;
             }
         }
         SDL_RenderPresent(gRenderer);
     }
     while (!Quit) {  //游戏主循环
-        while (SDL_PollEvent(&e) != 0) {  //事件池，没事就返回0
+        while (SDL_PollEvent(&e) != 0 || pause) {  //事件池，没事就返回0
             if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
                 Quit = true;
             }
@@ -171,18 +179,19 @@ int WinMain(int argc, char **argv) {
                 }
                 if (game->win){
                     pWinorLose(victory);
-
+                    SDL_RenderPresent(gRenderer);
                 }
                 if (SDL_PollEvent(&e) != 0) {
                     if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
                     if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
                         SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
-                        if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[1])) || game->win){
+                        if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[1])) || (game->win && SDL_PointInRect(&Mouse_Point, &resultpos[1]))){
                             game->Restart();
 //                            goto again;
                         }
-                        if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[2])) || game->win){
-                            Quit = true;
+                        if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[2])) || (game->win && SDL_PointInRect(&Mouse_Point, &resultpos[2]))){
+                            close();
+                            return 0;
                         }
                         if (game->life > 0 && SDL_PointInRect(&Mouse_Point, &repos)) {
                             _time = SDL_GetTicks() - _time;

@@ -78,6 +78,9 @@ void Enemy::render() {
     if (Health <= 0 || Pos.y > 870) {
         PicOrder < (Picture_max - 2) * 2 ? PicOrder = (Picture_max - 2) * 2 : 0;  //设定死亡动画只有两帧。
         dying = true;
+        smogpos.x=Pos.x-20;
+        smogpos.y=Pos.y-10;
+        SDL_RenderCopy(gRenderer, smog[4], nullptr, &smogpos);
         death();
         return;
     }
@@ -90,6 +93,7 @@ void Enemy::render() {
 
 void Enemy::death() {
     game->Enemy_Array[game->Enemy_Num] = nullptr;
+    game->money += 5;
     delete this;
 }
 
@@ -101,7 +105,7 @@ Enemy1::Enemy1(int n) : Enemy(n) {
     Center.x /= 2;
     Center.y /= 2;
     Health = 30;
-    VEL = 1;
+    VEL = 3;
     VelX = -VEL;
     X = Pos.x;
     Y = Pos.y;
@@ -115,5 +119,6 @@ void Enemy1::death() {
     }
     if (Pos.y > 870)
         game->life -= life_cost;
+        game->money -= 5;
     Enemy::death();
 }

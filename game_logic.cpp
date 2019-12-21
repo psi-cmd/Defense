@@ -21,8 +21,14 @@ void loadSingle() {
     if (MBullet_Texture == nullptr) {
         std::cout << "Unable to load image %s! SDL Error: " << "image\\bullet.png" << SDL_GetError();
     }
+
+    CShell_Texture = loadTexture(CShell_Pic);
+    if (CShell_Texture == nullptr) {
+        std::cout << "Unable to load image %s! SDL Error: " << "image\\shell.png" << SDL_GetError();
+    }
+
     startbg = loadTexture(startbgfile);
-    starticon = loadTexture(starticonfile);
+//    starticon = loadTexture(starticonfile);
     pause_pic = loadTexture(pausefile);
     re = loadTexture(refile);
     statef = loadTexture(statefile);
@@ -32,6 +38,7 @@ void loadSingle() {
     quit = loadTexture(quitfile);
     choice_ring = loadTexture(choicefile);
     for (int i = 0; i < 10; i++) numf[i] = loadTexture(numffile[i]);
+    for (int i = 0; i < 5; i++) smog[i] = loadTexture(smogfile[i]);
 
 }
 
@@ -40,41 +47,44 @@ void refresh() {
     SDL_RenderCopy(gRenderer, map, nullptr, nullptr);  //渲染器加载地图
     SDL_RenderCopy(gRenderer, pause_pic, nullptr, &pausepos);  //暂停按钮
     SDL_RenderCopy(gRenderer, statef, nullptr, &statepos);  //血量栏
-    wave(2, 7);
     game->Enemy_Wave();
+    wave(game->Wave, WAVE);
     game->Detect();
     game->Render();
-    if (menu_open >= 0){
+    if (menu_open >= 0) {
         SDL_RenderCopy(gRenderer, choice_ring, nullptr, &choicepos[menu_open]);
     }
+    Print_Dec(game->life, lifepos);
+    Print_Dec(game->money, moneypos);
     SDL_RenderPresent(gRenderer);
-    if (game->life<=0){
+    if (game->life <= 0) {
         pause = true;
     }
-    if (game->If_No_Enemy())
-        game->Enemy_Count = 10;
+//    if (game->If_No_Enemy())
+//        game->Enemy_Count = 10;
 }
 
 void Print_Dec(int n, SDL_Rect *pos) {
     int a, b, c, d;
-    a = (n / 100) % 10;
-    b = (n / 10) % 10;
-    c = n % 10;
-    d = n / 1000;
+    if (n < 0) n = 0;
+    a = n / 1000;
+    b = (n / 100) % 10;
+    c = (n / 10) % 10;
+    d = n % 10;
     if (n > 999) {
-        SDL_RenderCopy(gRenderer, numf[d], nullptr, pos);
-        SDL_RenderCopy(gRenderer, numf[a], nullptr, pos + 1);
-        SDL_RenderCopy(gRenderer, numf[b], nullptr, pos + 2);
-        SDL_RenderCopy(gRenderer, numf[c], nullptr, pos + 3);
-    } else if (n > 99) {
         SDL_RenderCopy(gRenderer, numf[a], nullptr, pos);
         SDL_RenderCopy(gRenderer, numf[b], nullptr, pos + 1);
         SDL_RenderCopy(gRenderer, numf[c], nullptr, pos + 2);
-    } else if (n > 9) {
+        SDL_RenderCopy(gRenderer, numf[d], nullptr, pos + 3);
+    } else if (n > 99) {
         SDL_RenderCopy(gRenderer, numf[b], nullptr, pos);
         SDL_RenderCopy(gRenderer, numf[c], nullptr, pos + 1);
-    } else {
+        SDL_RenderCopy(gRenderer, numf[d], nullptr, pos + 2);
+    } else if (n > 9) {
         SDL_RenderCopy(gRenderer, numf[c], nullptr, pos);
+        SDL_RenderCopy(gRenderer, numf[d], nullptr, pos + 1);
+    } else {
+        SDL_RenderCopy(gRenderer, numf[d], nullptr, pos);
     }
 }
 
@@ -91,7 +101,7 @@ void pWinorLose(SDL_Texture *pic)  //打印失败标志
     SDL_RenderCopy(gRenderer, quit, nullptr, resultpos + 2);
 }
 
-SDL_Rect relative_rect(int x, int y, SDL_Rect *inner_rect){
+SDL_Rect relative_rect(int x, int y, SDL_Rect *inner_rect) {
     SDL_Rect return_rect = *inner_rect;
     return_rect.x += x;
     return_rect.y += y;

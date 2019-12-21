@@ -1,15 +1,23 @@
 #include "enemy.h"
 #include "bullet.h"
+#include "shell.h"
 
 #ifndef START_GAME_H
 #define START_GAME_H
 
+#define WAVE 5
 
 enum choice_icon{
     choice_Mtower,
     choice_Cannon,
     choice_sell,
     choice_total
+};
+
+enum difficulty{
+    Casual,
+    Normal,
+    Veteran
 };
 
 bool icon_clicked(SDL_Rect *chosen_icon);
@@ -43,16 +51,25 @@ public:
     unsigned char Enemy_Num = 0;
     int Tower_Num = 0;
     unsigned char Bullet_Num = 0;
+    unsigned char Shell_Num = 0;
 
     Enemy *Enemy_Array[256];
     Tower *Tower_Array[Tower_point];
     Bullet *Bullet_Array[256];
+    Shell *Shell_Array[256];
 
     unsigned char Bullet_point = 0; //指向下一个子弹空位
-    int money = 2000;
-    int life = 10;
-    int Enemy_Count = 10;
+    unsigned char Shell_point = 0;
+    int Enemy_num[WAVE] = {1, 2, 3, 4, 5};
+    int money = 400;
+    int life = 6;
+    int Enemy_Count=0;
     int win=false;
+    bool restart = false;
+    int Wave = 0;
+    Uint32 wave_timer=0;
+    difficulty Diff = Normal;
+
 private:
     Uint32 Refresh_Tick = 0;
     int Interval = 2000;
