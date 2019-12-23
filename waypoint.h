@@ -22,7 +22,6 @@ static struct circle Circles[6] = {
         -1, 574, 512, 148, -25, 131, -26, false,
         1, 522, 695, 131, -26, 0, 1, false
 };
-//struct circle circle1 = {-1, 850, 290};
 
 SDL_Rect Way_Rect[Rect_Num] = {};
 

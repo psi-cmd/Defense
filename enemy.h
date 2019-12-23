@@ -45,7 +45,7 @@ public:
 
 //    const SDL_Rect FigSize = {0, 0, 35, 30};  //敌军图片大小
     //Maximum axis velocity of the dot
-    float VEL = 1;
+    float VEL = 1;  //因为逻辑问题，现在它实际上是个平方
 
 //    ~Enemy();
     void move(struct circle Circle);  //敌军移动
@@ -53,11 +53,11 @@ public:
     void render();  //显示刷新
     virtual void death();  //去世操作
     bool overline(State state);
-    int Health;
-    SDL_Rect Pos;  //位置
+    int Health{};
+    SDL_Rect Pos{};  //位置
     double Distance_Covered = 0;
     bool dying = false;
-    SDL_Point Center;
+    SDL_Point Center{};
 
 
 private:
@@ -70,10 +70,10 @@ private:
 
 protected:
     int PicOrder = 0;
-    double VelX, VelY=0;  //速度
-    double X, Y;
-    int Picture_max;
-    SDL_Texture **Texture_Set;
+    double VelX{}, VelY=0;  //速度
+    double X{}, Y{};
+    int Picture_max{};
+    SDL_Texture **Texture_Set{};
     int life_cost=1;
 };
 

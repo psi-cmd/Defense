@@ -66,7 +66,7 @@ void Bullet::nearest() {
         }
     }
     if (pot_target == -1) {
-        exist = 0;
+        exist = false;
         return;
     }
     target = game->Enemy_Array[pot_target];

@@ -1,6 +1,7 @@
 #include "tower.h"
 #include <cmath>
 
+#define TowerWidth 90
 
 Tower::Tower(int n) {
     self_rect = TowerPosition[n];

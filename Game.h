@@ -7,14 +7,14 @@
 
 #define WAVE 5
 
-enum choice_icon{
+enum choice_icon {
     choice_Mtower,
     choice_Cannon,
     choice_sell,
     choice_total
 };
 
-enum difficulty{
+enum difficulty {
     Casual,
     Normal,
     Veteran
@@ -31,6 +31,7 @@ public:
     Game();
 
     void Restart();
+
     void Enemy_Add(Enemy_Type n);
 
     void Enemy_Wave();
@@ -61,18 +62,20 @@ public:
     unsigned char Bullet_point = 0; //指向下一个子弹空位
     unsigned char Shell_point = 0;
     int Enemy_num[WAVE] = {1, 2, 3, 4, 5};
-    int money = 400;
-    int life = 6;
-    int Enemy_Count=0;
-    int win=false;
+    int money;
+    int life;
+    int Enemy_Count = 0;
+    int win = false;
     bool restart = false;
     int Wave = 0;
-    Uint32 wave_timer=0;
+    int VEL;
+    int Health;
+    Uint32 wave_timer = 100;
     difficulty Diff = Normal;
+    int Interval = 2000;
 
 private:
     Uint32 Refresh_Tick = 0;
-    int Interval = 2000;
 };
 
 /*class Menu

@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include "waypoint.h"
+#include <cmath>
 #include <iostream>
 #include <SDL.h>
 #include <cmath>
@@ -105,8 +106,8 @@ Enemy1::Enemy1(int n) : Enemy(n) {
     Center.x /= 2;
     Center.y /= 2;
     Health = 30;
-    VEL = 3;
-    VelX = -VEL;
+    VEL = 30;
+    VelX = -std::sqrt(VEL);
     X = Pos.x;
     Y = Pos.y;
     life_cost = 1;
@@ -117,8 +118,9 @@ void Enemy1::death() {
         SDL_RenderCopy(gRenderer, Texture_Set[PicOrder++ / 2], nullptr, &Pos);
         return;
     }
-    if (Pos.y > 870)
+    if (Pos.y > 870) {
         game->life -= life_cost;
         game->money -= 5;
+    }
     Enemy::death();
 }

@@ -28,7 +28,8 @@ SDL_Texture *defeat;
 SDL_Texture *victory;
 SDL_Texture *again;
 SDL_Texture *quit;
-SDL_Texture *choice_ring;
+SDL_Texture *choice_ring[3];
+SDL_Texture *nextwave;
 
 std::string mapfile = R"(..\image\map_demo.png)";
 std::string towergroundfile = R"(..\image\raw.png)";
@@ -45,7 +46,8 @@ std::string defeatfile = R"(..\image\defeat.png)";
 std::string victoryfile = R"(..\image\victory.png)";
 std::string againfile = R"(..\image\again.png)";
 std::string quitfile = R"(..\image\quit.png)";
-std::string choicefile = R"(..\image\choice.png)";
+std::string choicefile[3] = {R"(..\image\choice.png)",R"(..\image\choice1.png)",R"(..\image\choice2.png)"};
+std::string nextwavefile = R"(..\image\wave.png)";
 
 SDL_Rect WayPoint[20] = {1020, 290, 35, 30};
 SDL_Rect startpos = {374,390,252,123};
@@ -73,6 +75,7 @@ SDL_Rect choice_icon[choice_total] = {
         36, 0, 43, 47,
         36, 100, 43, 47
 };
+SDL_Rect nextwavepos = {938,281,55,40};
 
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 857;
@@ -86,7 +89,6 @@ auto *game = new Game;
 
 Uint32 _time, start;
 
-int TowerWidth = 90;
 //SDL_Surface *loadSurface(const std::string &path);
 
 SDL_Texture *loadTexture(const std::string &path);

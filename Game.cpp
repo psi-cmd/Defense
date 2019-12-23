@@ -13,6 +13,8 @@ Game::Game() {
 //    for (int j = 0; j < 15; Tower_Array[j] = nullptr, ++j);
     for (int j = 0; j < 256; Bullet_Array[j] = nullptr, ++j);
     for (int j = 0; j < 256; Shell_Array[j] = nullptr, ++j);
+    printf("");
+
 }
 
 
@@ -25,7 +27,7 @@ void Game::Enemy_Wave() {
         if (Wave < WAVE) {
             wave_timer == 0 ? wave_timer = 120, Enemy_Count = Enemy_num[Wave++] : 0;
             wave_timer--;
-        } else if (If_No_Enemy()){
+        } else if (If_No_Enemy()) {
             pause = true;
             game->win = true;
         }
@@ -42,7 +44,7 @@ void Game::Enemy_Add(Enemy_Type n) {
             }
             switch (n) {
                 case Enemy1:
-                    Enemy_Array[Enemy_Num - 1] = new class Enemy1((int) rand()%16);
+                    Enemy_Array[Enemy_Num - 1] = new class Enemy1((int) rand() % 16);
                     break;
             }
             return;
@@ -95,13 +97,13 @@ void Game::Render() {
 }
 
 void Game::Tower_Build() {
-    if (menu_open >= 0 && Mouse_Point.x && Mouse_Point.y){
-        if (icon_clicked(&choice_icon[choice_Mtower])){
+    if (menu_open >= 0 && Mouse_Point.x && Mouse_Point.y) {
+        if (icon_clicked(&choice_icon[choice_Mtower])) {
             if (game->money < 100)
                 return;
             Tower_Array[menu_open]->buildTower(Magic);
             Tower_Array[menu_open]->tower_level = 1;
-        } else if (icon_clicked(&choice_icon[choice_Cannon])){
+        } else if (icon_clicked(&choice_icon[choice_Cannon])) {
             if (game->money < 125)
                 return;
             Tower_Array[menu_open]->buildTower(Cannon);
@@ -110,8 +112,8 @@ void Game::Tower_Build() {
         menu_open = -1;
         return;
     }
-    for (int i=0; i<Tower_point; ++i){
-        if (SDL_PointInRect(&Mouse_Point, &(Tower_Array[i]->self_rect)) && !Tower_Array[i]->tower_level){
+    for (int i = 0; i < Tower_point; ++i) {
+        if (SDL_PointInRect(&Mouse_Point, &(Tower_Array[i]->self_rect)) && !Tower_Array[i]->tower_level) {
             menu_open = i;
         }
     }
@@ -119,16 +121,17 @@ void Game::Tower_Build() {
 
 
 void Game::Detect() {
-    for (int i = 0; i < Tower_point; ++i) {
-        if (Tower_Array[i]->type != None) {
+    for (auto &i : Tower_Array) {
+        if (i->type != None) {
             int Is_target = 0;
             int Distance = -100000;
             for (int j = 0; j < 256; ++j) {
                 if (Enemy_Array[j] != nullptr &&
                     !Enemy_Array[j]->dying &&
-                    Tower_Array[i]->in_range(Enemy_Array[j]->Pos)) {
-                    Enemy_Array[j]->Distance_Covered > Distance ? Is_target = j, Distance = Enemy_Array[j]->Distance_Covered : 0;
-                    Tower_Array[i]->target = &Enemy_Array[Is_target];
+                    i->in_range(Enemy_Array[j]->Pos)) {
+                    Enemy_Array[j]->Distance_Covered > Distance
+                    ? Is_target = j, Distance = Enemy_Array[j]->Distance_Covered : 0;
+                    i->target = &Enemy_Array[Is_target];
                 }
             }
         }
@@ -138,36 +141,37 @@ void Game::Detect() {
 
 void Game::Restart() {
     restart = true;
-    for (int i=0; i<256; ++i){
-        if (Enemy_Array[i]){
+    game->win = false;
+    for (int i = 0; i < 256; ++i) {
+        if (Enemy_Array[i]) {
             delete Enemy_Array[i];
             Enemy_Array[i] = nullptr;
         }
-        if (Bullet_Array[i]){
+        if (Bullet_Array[i]) {
             delete Bullet_Array[i];
             Bullet_Array[i] = nullptr;
         }
     }
     Tower_init();
     life = 6;
-    money = 400;
+    money = 350;
     Wave = 0;
     wave_timer = 0;
     Enemy_Count = 0;
 }
 
 bool Game::If_No_Enemy() {
-     bool temp = true;
-     for (int i=0; i<256; ++i){
-         if (Enemy_Array[i])
-             temp = false;
-     }
+    bool temp = true;
+    for (auto &i : Enemy_Array) {
+        if (i)
+            temp = false;
+    }
     return temp;
 }
 
 
-bool icon_clicked(SDL_Rect *chosen_icon){
-    SDL_Rect temp = relative_rect(TowerPosition[menu_open].x-10, TowerPosition[menu_open].y-47, chosen_icon);
+bool icon_clicked(SDL_Rect *chosen_icon) {
+    SDL_Rect temp = relative_rect(TowerPosition[menu_open].x - 10, TowerPosition[menu_open].y - 47, chosen_icon);
     return SDL_PointInRect(&Mouse_Point, &temp);
 }
 

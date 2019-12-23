@@ -7,7 +7,6 @@
 #include <SDL_image.h>
 #include <SDL.h>
 #include <string>
-//#include <SDL_ttf.h>
 #include "main.h"
 #include "enemy.cpp"
 #include "tower.cpp"
@@ -103,9 +102,45 @@ bool loadTextures(std::string *picture_path, SDL_Texture **texture_array, int n)
     return true;
 }
 
+void loadSingle() {
+    map = loadTexture(mapfile);
+    if (map == nullptr) {
+        std::cout << "Unable to load image %s! SDL Error: " << "image\\map_demo.png" << SDL_GetError();
+    }
+
+    TowerStaticTexture[0] = loadTexture(towergroundfile);
+    if (TowerStaticTexture[0] == nullptr) {
+        std::cout << "Unable to load image %s! SDL Error: " << "image\\raw.png" << SDL_GetError();
+    }
+
+    MBullet_Texture = loadTexture(MBullet_Pic);
+    if (MBullet_Texture == nullptr) {
+        std::cout << "Unable to load image %s! SDL Error: " << "image\\bullet.png" << SDL_GetError();
+    }
+
+    CShell_Texture = loadTexture(CShell_Pic);
+    if (CShell_Texture == nullptr) {
+        std::cout << "Unable to load image %s! SDL Error: " << "image\\shell.png" << SDL_GetError();
+    }
+
+    startbg = loadTexture(startbgfile);
+//    starticon = loadTexture(starticonfile);
+    pause_pic = loadTexture(pausefile);
+    re = loadTexture(refile);
+    statef = loadTexture(statefile);
+    defeat = loadTexture(defeatfile);
+    victory = loadTexture(victoryfile);
+    again = loadTexture(againfile);
+    quit = loadTexture(quitfile);
+    nextwave = loadTexture(nextwavefile);
+    for (int i = 0; i < 10; i++) numf[i] = loadTexture(numffile[i]);
+    for (int i = 0; i < 5; i++) smog[i] = loadTexture(smogfile[i]);
+    for (int i = 0; i < 3; i++) choice_ring[i] = loadTexture(choicefile[i]);
+
+}
 
 
-bool loadMedia() {
+bool loadArray() {
     loadSingle();
     int success = true;
     loadTextures(DevilPicture, DevilTexture, Enemy1_pic);
@@ -123,7 +158,7 @@ int WinMain(int argc, char **argv) {
     if (!init()) {
         cout << "failed to initialize!" << endl;
     } else {
-        if (!loadMedia()) {
+        if (!loadArray()) {
             cout << "Failed to load media!" << endl;
         }  //所有显示都给渲染器了。
     }
@@ -143,10 +178,24 @@ int WinMain(int argc, char **argv) {
                 SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
                 if (SDL_PointInRect(&Mouse_Point, &difficultypos[0])){
                     game->Diff = Casual;
+                    game->money = 425;
+                    game->life = 10;
+                    for (int i=0;i<WAVE;i++) game->Enemy_num[i] = 2*(i+1);
+                    game->VEL = 3;
                 } else if (SDL_PointInRect(&Mouse_Point, &difficultypos[1])){
                     game->Diff = Normal;
+                    game->money = 310;
+                    game->life = 5;
+                    game->Interval *= 0.5;
+                    for (int i=0;i<WAVE;i++) game->Enemy_num[i] = 5*(i+1);
+                    game->VEL = 5;
                 } else if (SDL_PointInRect(&Mouse_Point, &difficultypos[2])){
                     game->Diff = Veteran;
+                    game->money = 225;
+                    game->life = 1;
+                    game->Interval *= 0.4;
+                    for (int i=0;i<WAVE;i++) game->Enemy_num[i] = 7*(i+1);
+                    game->VEL = 10;
                 } else continue;
                 break;
             }
@@ -156,7 +205,8 @@ int WinMain(int argc, char **argv) {
     while (!Quit) {  //游戏主循环
         while (SDL_PollEvent(&e) != 0 || pause) {  //事件池，没事就返回0
             if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {  //按窗口右上角的叉
-                Quit = true;
+                close();
+                return 0;
             }
             if (e.type == SDL_MOUSEBUTTONDOWN || e.key.keysym.sym == SDLK_p) {
                 if (e.button.button == SDL_BUTTON_LEFT) {
@@ -166,6 +216,11 @@ int WinMain(int argc, char **argv) {
                         pause = true;
                         SDL_RenderCopy(gRenderer, re, nullptr, &repos);
                         SDL_RenderPresent(gRenderer);
+                    }
+                    else if (SDL_PointInRect(&Mouse_Point, &nextwavepos)) {
+                        game->money +=game->wave_timer/5;
+                        game->wave_timer = 400+200*game->Wave;
+                        game->Enemy_Count = game->Enemy_num[game->Wave++];
                     }
                     game->Tower_Build();
                 }
@@ -182,7 +237,10 @@ int WinMain(int argc, char **argv) {
                     SDL_RenderPresent(gRenderer);
                 }
                 if (SDL_PollEvent(&e) != 0) {
-                    if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) Quit = true;
+                    if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {
+                        close();
+                        return 0;
+                    }
                     if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
                         SDL_GetMouseState(&(Mouse_Point.x), &(Mouse_Point.y));
                         if ((game->life <= 0 && SDL_PointInRect(&Mouse_Point, &resultpos[1])) || (game->win && SDL_PointInRect(&Mouse_Point, &resultpos[1]))){

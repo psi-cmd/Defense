@@ -6,41 +6,6 @@ extern void wave(int m, int n);
 
 extern void pWinorLose(SDL_Texture *pic);
 
-void loadSingle() {
-    map = loadTexture(mapfile);
-    if (map == nullptr) {
-        std::cout << "Unable to load image %s! SDL Error: " << "image\\map_demo.png" << SDL_GetError();
-    }
-
-    TowerStaticTexture[0] = loadTexture(towergroundfile);
-    if (TowerStaticTexture[0] == nullptr) {
-        std::cout << "Unable to load image %s! SDL Error: " << "image\\raw.png" << SDL_GetError();
-    }
-
-    MBullet_Texture = loadTexture(MBullet_Pic);
-    if (MBullet_Texture == nullptr) {
-        std::cout << "Unable to load image %s! SDL Error: " << "image\\bullet.png" << SDL_GetError();
-    }
-
-    CShell_Texture = loadTexture(CShell_Pic);
-    if (CShell_Texture == nullptr) {
-        std::cout << "Unable to load image %s! SDL Error: " << "image\\shell.png" << SDL_GetError();
-    }
-
-    startbg = loadTexture(startbgfile);
-//    starticon = loadTexture(starticonfile);
-    pause_pic = loadTexture(pausefile);
-    re = loadTexture(refile);
-    statef = loadTexture(statefile);
-    defeat = loadTexture(defeatfile);
-    victory = loadTexture(victoryfile);
-    again = loadTexture(againfile);
-    quit = loadTexture(quitfile);
-    choice_ring = loadTexture(choicefile);
-    for (int i = 0; i < 10; i++) numf[i] = loadTexture(numffile[i]);
-    for (int i = 0; i < 5; i++) smog[i] = loadTexture(smogfile[i]);
-
-}
 
 void refresh() {
     SDL_RenderClear(gRenderer);
@@ -52,8 +17,12 @@ void refresh() {
     game->Detect();
     game->Render();
     if (menu_open >= 0) {
-        SDL_RenderCopy(gRenderer, choice_ring, nullptr, &choicepos[menu_open]);
+        if (game->money>=125) SDL_RenderCopy(gRenderer, choice_ring[0], nullptr, &choicepos[menu_open]);
+        else if (game->money<100) SDL_RenderCopy(gRenderer, choice_ring[1], nullptr, &choicepos[menu_open]);
+        else SDL_RenderCopy(gRenderer, choice_ring[2], nullptr, &choicepos[menu_open]);
     }
+    if (game->If_No_Enemy())
+        SDL_RenderCopy(gRenderer, nextwave, nullptr, &nextwavepos);
     Print_Dec(game->life, lifepos);
     Print_Dec(game->money, moneypos);
     SDL_RenderPresent(gRenderer);
